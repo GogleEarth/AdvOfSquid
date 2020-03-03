@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public float FORCE;
+    public float COF; // 마찰계수
+    public float MAX_SPEED = 10f;
+
+
     bool move_left;
     bool move_right;
     Vector2 dir;
-    float max_speed;
+    float curr_speed;
+    float force;
+    Rigidbody2D squid_rigidbody;
 
     // Start is called before the first frame update
     void Start()
@@ -16,7 +23,9 @@ public class PlayerController : MonoBehaviour
         move_right = false;
         dir.x = 0f;
         dir.y = 0f;
-        max_speed = 5f;
+        force = 0f;
+        curr_speed = 0f;
+        squid_rigidbody = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -27,13 +36,24 @@ public class PlayerController : MonoBehaviour
         if (move_left && move_right) dir.x = 0f;
         else if (move_right) dir.x = 1f;
         else if (move_left) dir.x = -1f;
-        else dir.x = 0;
+        else if (curr_speed <= 0f) dir.x = 0;
 
         Flip(dir.x);
 
         dir.Normalize();
 
-        transform.Translate(dir * max_speed * Time.deltaTime);
+        if (Input.GetAxis("Horizontal") != 0)
+            force += FORCE;
+        else
+            force = 0f;
+
+        float prev_speed = curr_speed;
+        curr_speed += (force - (2 * COF * 9.8f)) * Time.deltaTime; 
+
+        if (curr_speed >= MAX_SPEED) curr_speed = MAX_SPEED;
+        else if (curr_speed <= 0) curr_speed = 0;
+
+        transform.Translate(dir * curr_speed * Time.deltaTime);
     }
 
     void Flip(float x_dir)
@@ -68,7 +88,7 @@ public class PlayerController : MonoBehaviour
                 move_right = true;
         }
 
-        if(Input.GetKeyUp(KeyCode.LeftArrow))
+        if (Input.GetKeyUp(KeyCode.LeftArrow))
         {
             move_left = false;
         }
