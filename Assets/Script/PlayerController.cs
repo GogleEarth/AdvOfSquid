@@ -16,7 +16,6 @@ public class PlayerController : MonoBehaviour
     float force;
     Rigidbody2D squid_rigidbody;
 
-    // Start is called before the first frame update
     void Start()
     {
         move_left = false;
@@ -28,7 +27,6 @@ public class PlayerController : MonoBehaviour
         squid_rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         ProcessInput();
