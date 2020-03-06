@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float FORCE;
+    public float MOVE_FORCE = 1f;
     public float COF; // 마찰계수
     public float MAX_SPEED = 10f;
-
+    public float JIMP_FORCE = 10f;
 
     bool move_left;
     bool move_right;
+    bool onground;
     Vector2 dir;
     float curr_speed;
     float force;
@@ -20,6 +21,7 @@ public class PlayerController : MonoBehaviour
     {
         move_left = false;
         move_right = false;
+        onground = false;
         dir.x = 0f;
         dir.y = 0f;
         force = 0f;
@@ -41,7 +43,7 @@ public class PlayerController : MonoBehaviour
         dir.Normalize();
 
         if (Input.GetAxis("Horizontal") != 0)
-            force += FORCE;
+            force += MOVE_FORCE;
         else
             force = 0f;
 
@@ -74,13 +76,13 @@ public class PlayerController : MonoBehaviour
 
     void ProcessInput()
     {
-        if(Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             if (!move_left)
                 move_left = true;
         }
 
-        if(Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             if (!move_right)
                 move_right = true;
@@ -91,9 +93,27 @@ public class PlayerController : MonoBehaviour
             move_left = false;
         }
 
-        if(Input.GetKeyUp(KeyCode.RightArrow))
+        if (Input.GetKeyUp(KeyCode.RightArrow))
         {
             move_right = false;
         }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            if (onground)
+            {
+                this.squid_rigidbody.AddForce(Vector2.up * JIMP_FORCE, ForceMode2D.Impulse);
+            }
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "Ground") onground = true;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "Ground") onground = false;
     }
 }
