@@ -8,13 +8,16 @@ public class PlayerController : MonoBehaviour
     public float COF; // 마찰계수
     public float MAX_SPEED = 10f;
     public float JIMP_FORCE = 10f;
+    public int MAX_AIR_DASH_COUNT = 1;
 
     bool move_left;
     bool move_right;
     bool onground;
+    bool down_key;
     Vector2 dir;
     float curr_speed;
     float force;
+    int air_dash_count;
     Rigidbody2D squid_rigidbody;
 
     void Start()
@@ -22,10 +25,12 @@ public class PlayerController : MonoBehaviour
         move_left = false;
         move_right = false;
         onground = false;
+        down_key = false;
         dir.x = 0f;
         dir.y = 0f;
         force = 0f;
         curr_speed = 0f;
+        air_dash_count = 0;
         squid_rigidbody = GetComponent<Rigidbody2D>();
     }
 
@@ -48,7 +53,8 @@ public class PlayerController : MonoBehaviour
             force = 0f;
 
         float prev_speed = curr_speed;
-        curr_speed += (force - (2 * COF * 9.8f)) * Time.deltaTime; 
+        if (onground) curr_speed += (force - (2 * COF * 9.8f)) * Time.deltaTime; 
+        else curr_speed += force * Time.deltaTime;
 
         if (curr_speed >= MAX_SPEED) curr_speed = MAX_SPEED;
         else if (curr_speed <= 0) curr_speed = 0;
@@ -88,6 +94,12 @@ public class PlayerController : MonoBehaviour
                 move_right = true;
         }
 
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (!onground)
+                down_key = true;
+        }
+
         if (Input.GetKeyUp(KeyCode.LeftArrow))
         {
             move_left = false;
@@ -98,18 +110,52 @@ public class PlayerController : MonoBehaviour
             move_right = false;
         }
 
+        if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            down_key = false;
+        }
+
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            if (onground)
+            Jump();
+        }
+    }
+
+    private void Jump()
+    {
+        if (onground)
+        {
+            squid_rigidbody.AddForce(Vector2.up * JIMP_FORCE, ForceMode2D.Impulse);
+        }
+        else if (down_key)
+        {
+            squid_rigidbody.AddForce(Vector2.up * 3 * -JIMP_FORCE, ForceMode2D.Impulse);
+        }
+        else if (move_left)
+        {
+            if (air_dash_count < MAX_AIR_DASH_COUNT)
             {
-                this.squid_rigidbody.AddForce(Vector2.up * JIMP_FORCE, ForceMode2D.Impulse);
+                squid_rigidbody.AddForce(Vector2.right * -JIMP_FORCE, ForceMode2D.Impulse);
+                air_dash_count++;
+            }
+        }
+        else if (move_right)
+        {
+            if (air_dash_count < MAX_AIR_DASH_COUNT)
+            {
+                squid_rigidbody.AddForce(Vector2.right * JIMP_FORCE, ForceMode2D.Impulse);
+                air_dash_count++;
             }
         }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.transform.tag == "Ground") onground = true;
+        if (collision.transform.tag == "Ground")
+        {
+            onground = true;
+            air_dash_count = 0;
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
