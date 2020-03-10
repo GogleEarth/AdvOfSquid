@@ -164,7 +164,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 1.25
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -188,7 +188,10 @@ MonoBehaviour:
   MOVE_FORCE: 1
   COF: 0.8
   MAX_SPEED: 5
-  JIMP_FORCE: 10
+  JUMP_FORCE: 10
+  DASH_COOLTIME: 1
+  MAX_AIR_DASH_CNT: 1
+  MAX_AIR_JUMP_CNT: 1
 --- !u!61 &838614004
 BoxCollider2D:
   m_ObjectHideFlags: 0
