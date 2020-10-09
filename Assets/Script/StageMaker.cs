@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class StageMaker : MonoBehaviour
 {
-    public Canvas canvas;
-
     int count = 0;
+    int stagecount = 0;
+    float timelag = 0.0f;
     GameObject btnprefab;
     public class StageNode
     {
@@ -19,6 +19,9 @@ public class StageMaker : MonoBehaviour
         public StageNode(GameObject data)
         {
             this.btn = data;
+            left = null;
+            right = null;
+            center = null;
         }
     }
 
@@ -41,8 +44,7 @@ public class StageMaker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        btnprefab = Resources.Load<GameObject>("prefab/stage");
-        btnprefab.transform.SetParent(canvas.transform);
+        btnprefab = Resources.Load<GameObject>("prefap/stage");
         if (btnprefab == null)
         { 
             Debug.Log("mbtnpreprefab==null"); 
@@ -54,23 +56,31 @@ public class StageMaker : MonoBehaviour
     {
         if (btnprefab != null)
         {
-            if (count < 10)
+            if (timelag > 1.0f)
             {
-                int nodecount = Random.Range(1, 3);
-                for (int i = 0; i < nodecount; ++i)
+                if (0 < count && count < 9)
+                {
+                    int nodecount = Random.Range(1, 4);
+                    for (int i = 0; i < nodecount; ++i)
+                    {
+                        StageNode node = new StageNode(Instantiate(btnprefab));
+                        Vector3 position = new Vector3(5.0f * count, 5.0f * i, 0.0f);
+                        node.btn.transform.position = position;
+                        node.btn.name = "나는" + stagecount++ + "번째 버튼";
+                    }
+                }
+                else if (count < 10)
                 {
                     StageNode node = new StageNode(Instantiate(btnprefab));
-                    node.btn.transform.position = gameObject.transform.position;
-                    node.btn.name = "나는" + i + "번째 버튼";
-                    if (stagetree.root.left == null)
-                        stagetree.root.left = node;
-                    else if (stagetree.root.center == null)
-                        stagetree.root.center = node;
-                    else
-                        stagetree.root.right = node;
+                    Vector3 position = new Vector3(5.0f * count, 0.0f, 0.0f);
+                    node.btn.transform.position = position;
+                    node.btn.name = "나는" + stagecount++ + "번째 버튼";
                 }
-                count += 11;
+                count++;
+                timelag = 0.0f;
             }
+            else timelag += Time.deltaTime;
         }
+
     }
 }

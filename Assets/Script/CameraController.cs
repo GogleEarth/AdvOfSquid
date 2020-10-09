@@ -4,25 +4,50 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public GameObject player;
     public float camera_lag = 2f;
     public float height = 2f;
-    Transform player_transform;
+    public float zoom_speed = 2f;
+    float dist;
+    Vector3 mouse_start;
 
     // Start is called before the first frame update
     void Start()
     {
-        player_transform = player.transform;
+        dist = transform.position.z;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 position = transform.position;
-        Vector2 playerposition = player_transform.position;
-        playerposition.y += height;
-        Vector3 new_position = Vector2.Lerp(position, playerposition, camera_lag * Time.deltaTime);
-        new_position.z = transform.position.z;
-        transform.position = new_position;
+        Zoom();
+        Scroll();
+    }
+
+    private void Zoom()
+    {
+        float distance = Input.GetAxis("Mouse ScrollWheel") * -1 * zoom_speed;
+        if (distance != 0)
+        {
+            if (Camera.main.orthographicSize > 1 && Camera.main.orthographicSize < 16)
+            Camera.main.orthographicSize += distance;
+        }
+    }
+
+    private void Scroll()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            mouse_start = new Vector3(Input.mousePosition.x, Input.mousePosition.y, dist);
+            mouse_start = Camera.main.ScreenToWorldPoint(mouse_start);
+            mouse_start.z = transform.position.z;
+
+        }
+        else if (Input.GetMouseButton(1))
+        {
+            var mouse_move = new Vector3(Input.mousePosition.x, Input.mousePosition.y, dist);
+            mouse_move = Camera.main.ScreenToWorldPoint(mouse_move);
+            mouse_move.z = transform.position.z;
+            transform.position = transform.position - (mouse_move - mouse_start);
+        }
     }
 }
