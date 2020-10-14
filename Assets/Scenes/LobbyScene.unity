@@ -224,6 +224,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2be646fa752733408469caa669901df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stage: 0
+  floor: 0
+  selected_stage: {fileID: 0}
 --- !u!4 &387899788
 Transform:
   m_ObjectHideFlags: 0
@@ -577,6 +580,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d68acd18961cde744b52be888927b8e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gamemanger: {fileID: 387899787}
 --- !u!4 &1809191654
 Transform:
   m_ObjectHideFlags: 0

@@ -6,6 +6,11 @@ public class StageObject : MonoBehaviour
 {
     private GameObject target;
 
+    public int stage;
+    public int type;
+    public int num;
+    public GameManager gamemanager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +20,32 @@ public class StageObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (target == this.gameObject)
+        {
+            switch (type)
+            {
+                case 0:
+                    Debug.Log("전투 스테이지");
+
+                    break;
+                case 1:
+                    Debug.Log("회복 스테이지");
+
+                    break;
+                case 2:
+                    Debug.Log("상점 스테이지");
+
+                    break;
+                case 3:
+                    Debug.Log("보스 스테이지");
+
+                    break;
+                case 4:
+                    Debug.Log("빈 스테이지");
+
+                    break;
+            }
+        }
     }
 
     void FixedUpdate()
@@ -46,7 +76,7 @@ public class StageObject : MonoBehaviour
             //Debug.Log (hit.collider.name);  //이 부분을 활성화 하면, 선택된 오브젝트의 이름이 찍혀 나옵니다. 
 
             target = hit.collider.gameObject;  //히트 된 게임 오브젝트를 타겟으로 지정
-
+            gamemanager.selected_stage = target;
         }
 
     }

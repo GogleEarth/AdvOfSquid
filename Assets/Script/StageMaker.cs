@@ -10,6 +10,9 @@ public class StageMaker : MonoBehaviour
     int stagecount = 0;
     float timelag = 0.0f;
     GameObject btnprefab;
+
+    public GameManager gamemanger;
+
     public class StageNode
     {
         public GameObject btn { get; set; }
@@ -67,6 +70,11 @@ public class StageMaker : MonoBehaviour
                         Vector3 position = new Vector3(5.0f * count, 5.0f * i, 0.0f);
                         node.btn.transform.position = position;
                         node.btn.name = "나는" + stagecount++ + "번째 버튼";
+                        node.btn.GetComponent<StageObject>().stage = count;
+                        node.btn.GetComponent<StageObject>().type = Random.Range(0, 5);
+                        node.btn.GetComponent<StageObject>().num = stagecount;
+                        node.btn.GetComponent<StageObject>().gamemanager = gamemanger;
+
                     }
                 }
                 else if (count < 10)
