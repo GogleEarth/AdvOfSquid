@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +11,11 @@ public class GameManager : MonoBehaviour
     public int stage = 0;
     public int floor = 0;
     public GameObject selected_stage;
+    public Image battle_stage;
+    public Image boss_stage;
+    public Image heal_stage;
+    public Image shop_stage;
+    public Image void_stage;
 
     void Start()
     {
@@ -22,30 +28,39 @@ public class GameManager : MonoBehaviour
     {
         if(selected_stage)
         {
-            switch (selected_stage.GetComponent<StageObject>().type)
+            if (selected_stage.GetComponent<StageObject>().stage == stage)
             {
-                case 0:
-                    Debug.Log("전투 스테이지");
+                switch (selected_stage.GetComponent<StageObject>().type)
+                {
+                    case 0:
+                        Debug.Log("전투 스테이지");
+                        battle_stage.gameObject.SetActive(true);
 
-                    break;
-                case 1:
-                    Debug.Log("회복 스테이지");
+                        break;
+                    case 1:
+                        Debug.Log("회복 스테이지");
+                        heal_stage.gameObject.SetActive(true);
 
-                    break;
-                case 2:
-                    Debug.Log("상점 스테이지");
+                        break;
+                    case 2:
+                        Debug.Log("상점 스테이지");
+                        shop_stage.gameObject.SetActive(true);
 
-                    break;
-                case 3:
-                    Debug.Log("보스 스테이지");
+                        break;
+                    case 3:
+                        Debug.Log("보스 스테이지");
+                        boss_stage.gameObject.SetActive(true);
 
-                    break;
-                case 4:
-                    Debug.Log("빈 스테이지");
+                        break;
+                    case 4:
+                        Debug.Log("빈 스테이지");
+                        void_stage.gameObject.SetActive(true);
 
-                    break;
+                        break;
+                }
+                stage++;
+                selected_stage = null;
             }
-            selected_stage = null;
         }
     }
 

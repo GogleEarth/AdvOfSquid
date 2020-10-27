@@ -11,7 +11,11 @@ public class LobbyUIManager : MonoBehaviour
     public GameManager game_manager;
     public Image fade_image;
     public float fade_speed;
-
+    public Image battle_stage;
+    public Image boss_stage;
+    public Image heal_stage;
+    public Image shop_stage;
+    public Image void_stage;
 
     void Start()
     {
@@ -45,4 +49,17 @@ public class LobbyUIManager : MonoBehaviour
         }
     }
 
+    public void TestButton()
+    {
+        if (battle_stage.IsActive())
+            battle_stage.gameObject.SetActive(false);
+        else if (heal_stage.IsActive())
+            heal_stage.gameObject.SetActive(false);
+        else if (boss_stage.IsActive())
+            boss_stage.gameObject.SetActive(false);
+        else if (shop_stage.IsActive())
+            shop_stage.gameObject.SetActive(false);
+        else
+            void_stage.gameObject.SetActive(false);
+    }
 }

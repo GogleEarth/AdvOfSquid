@@ -11,7 +11,6 @@ public class StageMaker : MonoBehaviour
     float timelag = 0.0f;
     GameObject btnprefab;
 
-    public GameManager gamemanger;
 
     public class StageNode
     {
@@ -73,7 +72,6 @@ public class StageMaker : MonoBehaviour
                         node.btn.GetComponent<StageObject>().stage = count;
                         node.btn.GetComponent<StageObject>().type = Random.Range(0, 5);
                         node.btn.GetComponent<StageObject>().num = stagecount;
-                        node.btn.GetComponent<StageObject>().gamemanager = gamemanger;
 
                     }
                 }
@@ -82,6 +80,9 @@ public class StageMaker : MonoBehaviour
                     StageNode node = new StageNode(Instantiate(btnprefab));
                     Vector3 position = new Vector3(5.0f * count, 0.0f, 0.0f);
                     node.btn.transform.position = position;
+                    node.btn.GetComponent<StageObject>().stage = count;
+                    node.btn.GetComponent<StageObject>().type = Random.Range(0, 5);
+                    node.btn.GetComponent<StageObject>().num = stagecount;
                     node.btn.name = "나는" + stagecount++ + "번째 버튼";
                 }
                 count++;

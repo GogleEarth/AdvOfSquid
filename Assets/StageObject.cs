@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageObject : MonoBehaviour
 {
@@ -9,18 +10,18 @@ public class StageObject : MonoBehaviour
     public int stage;
     public int type;
     public int num;
-    public GameManager gamemanager;
+    public GameObject gamemanager;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        gamemanager = GameObject.FindWithTag("GameManager");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (target == this.gameObject)
+        if (target != null && target == this.gameObject && stage == gamemanager.GetComponent<GameManager>().stage)
         {
             switch (type)
             {
@@ -76,7 +77,7 @@ public class StageObject : MonoBehaviour
             //Debug.Log (hit.collider.name);  //이 부분을 활성화 하면, 선택된 오브젝트의 이름이 찍혀 나옵니다. 
 
             target = hit.collider.gameObject;  //히트 된 게임 오브젝트를 타겟으로 지정
-            gamemanager.selected_stage = target;
+            gamemanager.GetComponent<GameManager>().selected_stage = target;
         }
 
     }
