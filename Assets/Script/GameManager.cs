@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.UI;
+using GenericScript;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class GameManager : MonoBehaviour
     public Image heal_stage;
     public Image shop_stage;
     public Image void_stage;
+
+    List<Card> CardList;
 
     void Start()
     {
