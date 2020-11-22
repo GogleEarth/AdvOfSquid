@@ -5,13 +5,13 @@ using GenericScript;
 
 public class Player : MonoBehaviour
 {
-    List<Artifact> inventory;
+    List<int> inventory;
     List<int> deck;
     public GameManager gameManager;
     // Start is called before the first frame update
     void Start()
     {
-        inventory = new List<Artifact>();
+        inventory = new List<int>();
         deck = new List<int>();
     }
 

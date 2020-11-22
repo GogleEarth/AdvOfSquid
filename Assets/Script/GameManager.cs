@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.UI;
 using GenericScript;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,11 +20,76 @@ public class GameManager : MonoBehaviour
     public Image void_stage;
 
     List<Card> CardList;
+    List<Artifact> ArtifactList;
 
     void Start()
     {
         game_start = false;
         selected_stage = null;
+
+        FileStream file = new FileStream("Assets/Resources/cardtest.txt", FileMode.Open);
+        StreamReader streamReader = new StreamReader(file);
+
+        CardList = new List<Card>();
+        ArtifactList = new List<Artifact>();
+
+        while(!streamReader.EndOfStream)
+        {
+            string input_text = streamReader.ReadLine();
+            if (input_text == "Info")
+            {
+                string card_name = streamReader.ReadLine();
+                string image_name = streamReader.ReadLine();
+                string flavor_text = streamReader.ReadLine();
+                string effect_text = streamReader.ReadLine();
+                CardEffect cardEffect = new CardEffect();
+                List<CardCategory> cardCategories = new List<CardCategory>();
+                List<int> cardValue = new List<int>();
+                string data = streamReader.ReadLine();
+                if (data == "Target")
+                {
+                    data = streamReader.ReadLine();
+                    while(data != "Category")
+                    {
+                        cardEffect.targets.Add((CardTarget)int.Parse(data));
+                        data = streamReader.ReadLine();
+                    }
+                }
+                if (data == "Category")
+                {
+                    data = streamReader.ReadLine();
+                    while (data != "Value")
+                    {
+                        cardCategories.Add((CardCategory)int.Parse(data));
+                        data = streamReader.ReadLine();
+                    }
+                }
+                if (data == "Value")
+                {
+                    data = streamReader.ReadLine();
+                    while (data != "End")
+                    {
+                        cardValue.Add(int.Parse(data));
+                        data = streamReader.ReadLine();
+                    }
+                }
+
+                for (int i = 0; i < cardCategories.Count; i++)
+                {
+                    cardEffect.effection.Add(cardCategories[i], cardValue[i]);
+                }
+
+                CardList.Add(new Card(card_name, image_name, flavor_text, effect_text, cardEffect));
+            }
+        }
+
+        foreach (Card card in CardList)
+        {
+            Debug.Log(card.Display());
+        }
+
+        file.Close();
+
     }
 
     // Update is called once per frame
