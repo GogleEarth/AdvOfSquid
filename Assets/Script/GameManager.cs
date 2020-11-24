@@ -76,7 +76,9 @@ public class GameManager : MonoBehaviour
 
                 for (int i = 0; i < cardCategories.Count; i++)
                 {
-                    cardEffect.effection.Add(cardCategories[i], cardValue[i]);
+                    Dictionary<CardCategory, int> eff_data = new Dictionary<CardCategory, int>();
+                    eff_data.Add(cardCategories[i], cardValue[i]);
+                    cardEffect.effection.Add(eff_data);
                 }
 
                 CardList.Add(new Card(card_name, image_name, flavor_text, effect_text, cardEffect));
