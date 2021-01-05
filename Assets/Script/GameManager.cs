@@ -9,7 +9,6 @@ using System.IO;
 public class GameManager : MonoBehaviour
 {
     bool game_start;
-    // Start is called before the first frame update
     public int stage = 0;
     public int floor = 0;
     public GameObject selected_stage;
@@ -27,71 +26,11 @@ public class GameManager : MonoBehaviour
         game_start = false;
         selected_stage = null;
 
-        FileStream file = new FileStream("Assets/Resources/cardtest.txt", FileMode.Open);
-        StreamReader streamReader = new StreamReader(file);
-
         CardList = new List<Card>();
         ArtifactList = new List<Artifact>();
 
-        while(!streamReader.EndOfStream)
-        {
-            string input_text = streamReader.ReadLine();
-            if (input_text == "Info")
-            {
-                string card_name = streamReader.ReadLine();
-                string image_name = streamReader.ReadLine();
-                string flavor_text = streamReader.ReadLine();
-                string effect_text = streamReader.ReadLine();
-                CardEffect cardEffect = new CardEffect();
-                List<CardCategory> cardCategories = new List<CardCategory>();
-                List<int> cardValue = new List<int>();
-                string data = streamReader.ReadLine();
-                if (data == "Target")
-                {
-                    data = streamReader.ReadLine();
-                    while(data != "Category")
-                    {
-                        cardEffect.targets.Add((CardTarget)int.Parse(data));
-                        data = streamReader.ReadLine();
-                    }
-                }
-                if (data == "Category")
-                {
-                    data = streamReader.ReadLine();
-                    while (data != "Value")
-                    {
-                        cardCategories.Add((CardCategory)int.Parse(data));
-                        data = streamReader.ReadLine();
-                    }
-                }
-                if (data == "Value")
-                {
-                    data = streamReader.ReadLine();
-                    while (data != "End")
-                    {
-                        cardValue.Add(int.Parse(data));
-                        data = streamReader.ReadLine();
-                    }
-                }
-
-                for (int i = 0; i < cardCategories.Count; i++)
-                {
-                    Dictionary<CardCategory, int> eff_data = new Dictionary<CardCategory, int>();
-                    eff_data.Add(cardCategories[i], cardValue[i]);
-                    cardEffect.effection.Add(eff_data);
-                }
-
-                CardList.Add(new Card(card_name, image_name, flavor_text, effect_text, cardEffect));
-            }
-        }
-
-        foreach (Card card in CardList)
-        {
-            Debug.Log(card.Display());
-        }
-
-        file.Close();
-
+        LoadCardData();
+        LoadArtiData();
     }
 
     // Update is called once per frame
@@ -133,6 +72,150 @@ public class GameManager : MonoBehaviour
                 selected_stage = null;
             }
         }
+    }
+
+    void LoadCardData()
+    {
+        FileStream file = new FileStream("Assets/Resources/cardtest.txt", FileMode.Open);
+        StreamReader streamReader = new StreamReader(file);
+
+        if (file.CanRead)
+        {
+            while (!streamReader.EndOfStream)
+            {
+                string input_text = streamReader.ReadLine();
+                List<CardEffect> cardEffects = new List<CardEffect>();
+                List<CardTarget> cardTargets = new List<CardTarget>();
+                List<CardCategory> cardCategorys = new List<CardCategory>();
+                List<int> cardValues = new List<int>();
+
+                if (input_text == "Info")
+                {
+                    string card_name = streamReader.ReadLine();
+                    string image_name = streamReader.ReadLine();
+                    string flavor_text = streamReader.ReadLine();
+                    string effect_text = streamReader.ReadLine();
+                    string data = streamReader.ReadLine();
+                    if (data == "Target")
+                    {
+                        data = streamReader.ReadLine();
+                        while (data != "Category")
+                        {
+                            cardTargets.Add((CardTarget)int.Parse(data));
+                            data = streamReader.ReadLine();
+                        }
+                    }
+                    if (data == "Category")
+                    {
+                        data = streamReader.ReadLine();
+                        while (data != "Value")
+                        {
+                            cardCategorys.Add((CardCategory)int.Parse(data));
+                            data = streamReader.ReadLine();
+                        }
+                    }
+                    if (data == "Value")
+                    {
+                        data = streamReader.ReadLine();
+                        while (data != "End")
+                        {
+                            cardValues.Add(int.Parse(data));
+                            data = streamReader.ReadLine();
+                        }
+                    }
+
+                    for (int i = 0; i < cardTargets.Count; i++)
+                    {
+                        cardEffects.Add(new CardEffect(cardTargets[i], cardCategorys[i], cardValues[i]));
+                    }
+
+                    CardList.Add(new Card(card_name, image_name, flavor_text, effect_text, cardEffects));
+                }
+            }
+
+            foreach (Card card in CardList)
+            {
+                Debug.Log(card.Display());
+            }
+        }
+        else
+        {
+            Debug.Log("flie not found!");
+        }
+
+        file.Close();
+    }
+
+    void LoadArtiData()
+    {
+        FileStream file = new FileStream("Assets/Resources/artitest.txt", FileMode.Open);
+        StreamReader streamReader = new StreamReader(file);
+
+        if (file.CanRead)
+        {
+            while (!streamReader.EndOfStream)
+            {
+                string input_text = streamReader.ReadLine();
+                List<ArtifactEffect> artiEffects = new List<ArtifactEffect>();
+                List<ArtifactTarget> artiTargets = new List<ArtifactTarget>();
+                List<ArtifactCategory> artiCategorys = new List<ArtifactCategory>();
+                List<int> artiValues = new List<int>();
+
+                if (input_text == "Info")
+                {
+                    string card_name = streamReader.ReadLine();
+                    string image_name = streamReader.ReadLine();
+                    string flavor_text = streamReader.ReadLine();
+                    string effect_text = streamReader.ReadLine();
+                    string data = streamReader.ReadLine();
+                    if (data == "Target")
+                    {
+                        data = streamReader.ReadLine();
+                        while (data != "Category")
+                        {
+                            artiTargets.Add((ArtifactTarget)int.Parse(data));
+                            data = streamReader.ReadLine();
+                        }
+                    }
+                    if (data == "Category")
+                    {
+                        data = streamReader.ReadLine();
+                        while (data != "Value")
+                        {
+                            artiCategorys.Add((ArtifactCategory)int.Parse(data));
+                            data = streamReader.ReadLine();
+                        }
+                    }
+                    if (data == "Value")
+                    {
+                        data = streamReader.ReadLine();
+                        while (data != "End")
+                        {
+                            artiValues.Add(int.Parse(data));
+                            data = streamReader.ReadLine();
+                        }
+                    }
+
+                    for (int i = 0; i < artiTargets.Count; i++)
+                    {
+                        artiEffects.Add(new ArtifactEffect(artiTargets[i], artiCategorys[i], artiValues[i]));
+                    }
+
+                    ArtifactList.Add(new Artifact(card_name, image_name, flavor_text, effect_text, artiEffects));
+                }
+            }
+
+            foreach (Artifact arti in ArtifactList)
+            {
+                Debug.Log(arti.Display());
+            }
+        }
+        else
+        {
+            Debug.Log("flie not found!");
+        }
+
+        file.Close();
     }
 
     public void SetGameStart(bool start)

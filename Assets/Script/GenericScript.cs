@@ -22,8 +22,42 @@ namespace GenericScript
 
     public class ArtifactEffect
     {
-        List<ArtifactTarget> targets;
-        Dictionary<ArtifactCategory,int> effection;
+        ArtifactTarget Target;
+        ArtifactTarget target
+        {
+            get { return Target; }
+            set { Target = value; }
+        }
+
+
+        ArtifactCategory Category;
+        public ArtifactCategory category
+        {
+            get { return Category; }
+            set { Category = value; }
+        }
+
+        int Value;
+        public int value
+        {
+            get { return Value; }
+            set { Value = value; }
+        }
+
+        public ArtifactEffect() { }
+
+        public ArtifactEffect(ArtifactTarget t, ArtifactCategory c, int v)
+        {
+            Target = t;
+            Category = c;
+            Value = v;
+        }
+
+        public string Display()
+        {
+            return Target + " " + Category + " " + Value + "\n";
+        }
+
     }
 
     public enum CardCategory
@@ -46,38 +80,41 @@ namespace GenericScript
 
     public class CardEffect
     {
-        public List<CardTarget> targets;
-        public List<Dictionary<CardCategory, int>> effection;
-
-        public CardEffect()
+        CardTarget Target;
+        public CardTarget target 
         {
-            targets = new List<CardTarget>();
-            effection = new List<Dictionary<CardCategory, int>>();
+            get { return Target; }
+            set { Target = value; }
+        }
+
+        CardCategory Category; 
+        public CardCategory category
+        {
+            get { return Category; }
+            set { Category = value; }
+        }
+
+        int Value;
+        public int value
+        {
+            get { return Value; } 
+            set { Value = value; } 
+        }
+
+        public CardEffect() { }
+
+        public CardEffect(CardTarget t, CardCategory c, int v)
+        {
+            Target = t;
+            Category = c;
+            Value = v;
         }
 
         public string Display()
         {
-            string ret_data = " Target : ";
-
-            foreach (CardTarget target in targets)
-            {
-                ret_data += target;
-                ret_data += " ";
-            }
-            ret_data += "Effection :";
-            foreach (Dictionary<CardCategory,int> dic in effection)
-            {
-                foreach (KeyValuePair<CardCategory, int> data in dic)
-                {
-                    ret_data += data.Key;
-                    ret_data += "-";
-                    ret_data += data.Value;
-                    ret_data += " ";
-                }
-            }
-
-            return ret_data;
+            return Target + " " + Category + " " + Value + "\n";
         }
+
     }
 
     public class Artifact
@@ -86,16 +123,29 @@ namespace GenericScript
         string image_name;
         string flavor_text;
         string effect_text;
-        ArtifactEffect effect;
+        List<ArtifactEffect> effects;
 
         public Artifact(string arti_name, string img_name, string flav_text, 
-            string eff_text, ArtifactEffect eff)
+            string eff_text, List<ArtifactEffect> eff)
         {
             artifact_name = arti_name;
             image_name = img_name;
             flavor_text = flav_text;
             effect_text = eff_text;
-            effect = eff;
+            effects = eff;
+        }
+
+        public string Display()
+        {
+            string ret_data = artifact_name + "\n" + image_name + "\n" + flavor_text + "\n" + effect_text
+                + "\n";
+
+            foreach (ArtifactEffect effect in effects)
+            {
+                ret_data += effect.Display();
+            }
+
+            return ret_data;
         }
     }
 
@@ -105,24 +155,27 @@ namespace GenericScript
         string image_name;
         string flavor_text;
         string effect_text;
-        CardEffect effect;
+        List<CardEffect> effects;
         public Card(string ca_name, string img_name, string flav_text,
-            string eff_text, CardEffect eff)
+            string eff_text, List<CardEffect> eff)
         {
             card_name = ca_name;
             image_name = img_name;
             flavor_text = flav_text;
             effect_text = eff_text;
-            effect = eff;
+            effects = eff;
         }
 
         public string Display()
         {
-            string ret_data;
+            string ret_data = card_name + "\n" + image_name + "\n" + flavor_text + "\n" + effect_text
+                + "\n";
 
-            ret_data = card_name + " " + image_name + " " + flavor_text + " " + effect_text
-                + "" + effect.Display();
-
+            foreach (CardEffect effect in effects)
+            {
+                 ret_data += effect.Display();
+            }
+            
             return ret_data;
         }
     }
