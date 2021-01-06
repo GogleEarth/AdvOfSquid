@@ -302,7 +302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ccb29920c3f9404aa751f869f920e46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 387899787}
+  game_manager: {fileID: 0}
 --- !u!4 &128536291
 Transform:
   m_ObjectHideFlags: 0
@@ -628,9 +628,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2be646fa752733408469caa669901df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  game_init: 0
   stage: 0
   floor: 0
   selected_stage: {fileID: 0}
+  player: {fileID: 128536290}
   battle_stage: {fileID: 733977099}
   boss_stage: {fileID: 259205554}
   heal_stage: {fileID: 651585520}

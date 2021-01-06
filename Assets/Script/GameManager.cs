@@ -9,9 +9,11 @@ using System.IO;
 public class GameManager : MonoBehaviour
 {
     bool game_start;
+    public bool game_init = false;
     public int stage = 0;
     public int floor = 0;
     public GameObject selected_stage;
+    public Player player;
     public Image battle_stage;
     public Image boss_stage;
     public Image heal_stage;
@@ -30,7 +32,10 @@ public class GameManager : MonoBehaviour
         ArtifactList = new List<Artifact>();
 
         LoadCardData();
-        LoadArtiData();
+        //LoadArtiData();
+        InitPlayerDeck();
+
+        game_init = true;
     }
 
     // Update is called once per frame
@@ -209,6 +214,31 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log(arti.Display());
             }
+        }
+        else
+        {
+            Debug.Log("flie not found!");
+        }
+
+        file.Close();
+    }
+
+    void InitPlayerDeck()
+    {
+        List<int> deck = new List<int>();
+
+        FileStream file = new FileStream("Assets/Resources/decktest.txt", FileMode.Open);
+        StreamReader streamReader = new StreamReader(file);
+
+        if (file.CanRead)
+        {
+            while (!streamReader.EndOfStream)
+            {
+                string input_text = streamReader.ReadLine();
+                deck.Add(int.Parse(input_text));
+            }
+
+            player.Deck = deck;
         }
         else
         {

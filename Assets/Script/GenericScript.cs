@@ -59,6 +59,12 @@ namespace GenericScript
         }
 
     }
+    public enum CardTarget
+    {
+        Own,
+        Enemy,
+        Both
+    }
 
     public enum CardCategory
     {
@@ -71,12 +77,6 @@ namespace GenericScript
         Sleep
     }
 
-    public enum CardTarget
-    {
-        Own,
-        Enemy,
-        Both
-    }
 
     public class CardEffect
     {

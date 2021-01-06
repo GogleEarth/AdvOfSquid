@@ -58,7 +58,7 @@ public class StageMaker : MonoBehaviour
     {
         if (btnprefab != null)
         {
-            if (timelag > 1.0f)
+            if (timelag > 0.0f)
             {
                 if (0 < count && count < 9)
                 {
