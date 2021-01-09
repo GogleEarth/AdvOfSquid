@@ -178,6 +178,16 @@ namespace GenericScript
             
             return ret_data;
         }
+
+        public string getImageName()
+        {
+            return image_name;
+        }
+
+        public string getEffectText()
+        {
+            return effect_text;
+        }
     }
 
 }

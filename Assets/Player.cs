@@ -65,4 +65,14 @@ public class Player : MonoBehaviour
         Debug.Log(log);
     }
 
+    #region PUBLIC_METHOD
+    public int drawCard(int index)
+    {
+        if (index < deck.Count)
+            return deck[index];
+        else return -1;
+    }
+
+    #endregion
+
 }

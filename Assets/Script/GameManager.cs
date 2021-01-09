@@ -19,9 +19,11 @@ public class GameManager : MonoBehaviour
     public Image heal_stage;
     public Image shop_stage;
     public Image void_stage;
+    public GameObject mBattleManger;
 
     List<Card> CardList;
     List<Artifact> ArtifactList;
+    Sprite[] mSprites;
 
     void Start()
     {
@@ -30,6 +32,13 @@ public class GameManager : MonoBehaviour
 
         CardList = new List<Card>();
         ArtifactList = new List<Artifact>();
+
+        mSprites = Resources.LoadAll<Sprite>("Image");
+
+        foreach (var item in mSprites)
+        {
+            Debug.Log(item.texture.name);
+        }
 
         LoadCardData();
         //LoadArtiData();
@@ -50,7 +59,7 @@ public class GameManager : MonoBehaviour
                     case 0:
                         Debug.Log("전투 스테이지");
                         battle_stage.gameObject.SetActive(true);
-
+                        mBattleManger.GetComponent<BattleManager>().Init(true);
                         break;
                     case 1:
                         Debug.Log("회복 스테이지");
@@ -248,8 +257,32 @@ public class GameManager : MonoBehaviour
         file.Close();
     }
 
+    #region PUBLIC_METHOD
     public void SetGameStart(bool start)
     {
         game_start = start;
     }
+
+    public Sprite findImageByName(string ImageName)
+    {
+        Sprite image = null;
+
+        foreach (Sprite item in mSprites)
+        {
+            if (item.texture.name == ImageName)
+            {
+                image = item;
+                break;
+            }
+        }
+
+        return image;
+    }
+
+    public Card findCard(int index)
+    {
+        return CardList[index];
+    }
+
+    #endregion
 }
