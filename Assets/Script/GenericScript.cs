@@ -188,6 +188,11 @@ namespace GenericScript
         {
             return effect_text;
         }
+
+        public string getCardName()
+        {
+            return card_name;
+        }
     }
 
 }

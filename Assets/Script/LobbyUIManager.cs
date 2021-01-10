@@ -8,7 +8,9 @@ using UnityEngine.UI;
 
 public class LobbyUIManager : MonoBehaviour
 {
+    #region PUBLIC
     public GameManager game_manager;
+    public GameObject mBattleManager;
     public Image fade_image;
     public float fade_speed;
     public Image battle_stage;
@@ -16,6 +18,8 @@ public class LobbyUIManager : MonoBehaviour
     public Image heal_stage;
     public Image shop_stage;
     public Image void_stage;
+
+    #endregion
 
     void Start()
     {
@@ -49,6 +53,7 @@ public class LobbyUIManager : MonoBehaviour
         }
     }
 
+    #region PUBLIC_METHOD
     public void TestButton()
     {
         if (battle_stage.IsActive())
@@ -62,4 +67,11 @@ public class LobbyUIManager : MonoBehaviour
         else
             void_stage.gameObject.SetActive(false);
     }
+
+    public void turnEnd()
+    {
+        mBattleManager.GetComponent<BattleManager>().doEndTurn();
+    }
+
+    #endregion
 }

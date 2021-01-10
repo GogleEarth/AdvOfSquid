@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
                     case 0:
                         Debug.Log("전투 스테이지");
                         battle_stage.gameObject.SetActive(true);
-                        mBattleManger.GetComponent<BattleManager>().Init(true);
+                        mBattleManger.GetComponent<BattleManager>().init(true);
                         break;
                     case 1:
                         Debug.Log("회복 스테이지");

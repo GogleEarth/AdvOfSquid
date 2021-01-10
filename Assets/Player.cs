@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
         game_manager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         inventory = new List<int>();
         hp = 10;
-
+        spd = 10.0f;
     }
 
     // Update is called once per frame
@@ -71,6 +71,11 @@ public class Player : MonoBehaviour
         if (index < deck.Count)
             return deck[index];
         else return -1;
+    }
+
+    public float getSpeed()
+    {
+        return spd;
     }
 
     #endregion
