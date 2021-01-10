@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
                     case 0:
                         Debug.Log("전투 스테이지");
                         battle_stage.gameObject.SetActive(true);
-                        mBattleManger.GetComponent<BattleManager>().init(true);
+                        mBattleManger.GetComponent<BattleManager>().Init(true);
                         break;
                     case 1:
                         Debug.Log("회복 스테이지");
@@ -263,7 +263,7 @@ public class GameManager : MonoBehaviour
         game_start = start;
     }
 
-    public Sprite findImageByName(string ImageName)
+    public Sprite FindImageByName(string ImageName)
     {
         Sprite image = null;
 
@@ -279,7 +279,7 @@ public class GameManager : MonoBehaviour
         return image;
     }
 
-    public Card findCard(int index)
+    public Card FindCard(int index)
     {
         return CardList[index];
     }

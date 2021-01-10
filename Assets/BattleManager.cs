@@ -29,7 +29,7 @@ public class BattleManager : MonoBehaviour
     #endregion
 
     #region PUBLIC_METHOD
-    public void init(bool gameStart)
+    public void Init(bool gameStart)
     {
         mIsBattleStart = gameStart;
         mPlayerTurnGuage = 0.0f;
@@ -42,18 +42,22 @@ public class BattleManager : MonoBehaviour
         mIsPlayerTurn = false;
     }
 
-    public void doEndTurn()
+    public void DoEndTurn()
     {
         if(mIsPlayerTurn)
             mIsPlayerTurnEnd = true;
     }
 
+    public bool IsBattleStart()
+    {
+        return mIsBattleStart;
+    }
     #endregion
 
     #region PRIVATE_METHOD
     void Start()
     {
-        init(false);
+        Init(false);
     }
 
     void Update()
@@ -98,13 +102,14 @@ public class BattleManager : MonoBehaviour
                     RectTransform cardPosition = card.GetComponent<RectTransform>();
                     cardPosition.SetParent(mBattleStage.transform.Find("Hand").transform.Find("HorizontalLayoutGroup"));
                     cardPosition.position = mBattleStage.transform.Find("Hand").position;
-                    Card drawnCard = mGameManager.GetComponent<GameManager>().findCard(drawnCardIndex);
-                    string imageName = drawnCard.getImageName();
+                    Card drawnCard = mGameManager.GetComponent<GameManager>().FindCard(drawnCardIndex);
+                    string imageName = drawnCard.GetImageName();
                     card.transform.Find("CardImage").gameObject.GetComponent<Image>().sprite =
-                        mGameManager.GetComponent<GameManager>().findImageByName(imageName.Substring(0, imageName.Length-4));
+                        mGameManager.GetComponent<GameManager>().FindImageByName(imageName.Substring(0, imageName.Length-4));
                     card.transform.Find("TextPanel").transform.Find("CardText").GetComponent<Text>().text =
-                        drawnCard.getEffectText();
-                    card.name = drawnCard.getCardName();
+                        drawnCard.GetEffectText();
+                    card.name = drawnCard.GetCardName();
+                    card.GetComponent<CardObject>().Init(drawnCard);
 
                     mPlayerHand++;
                 }
@@ -117,7 +122,7 @@ public class BattleManager : MonoBehaviour
         while (true)
         {
             yield return null;
-            Debug.Log("플레이어 차례진행중");
+            //Debug.Log("플레이어 차례진행중");
             if (mIsPlayerTurnEnd)
             {
                 mIsSomebodysTurn = false;

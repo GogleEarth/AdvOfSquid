@@ -23,28 +23,33 @@ public class StageObject : MonoBehaviour
     {
         if (target != null && target == this.gameObject && stage == gamemanager.GetComponent<GameManager>().stage)
         {
-            switch (type)
+            if (!gamemanager.GetComponent<GameManager>().mBattleManger.
+                GetComponent<BattleManager>().IsBattleStart())
             {
-                case 0:
-                    Debug.Log("전투 스테이지");
+                gamemanager.GetComponent<GameManager>().selected_stage = target;
+                switch (type)
+                {
+                    case 0:
+                        Debug.Log("전투 스테이지");
 
-                    break;
-                case 1:
-                    Debug.Log("회복 스테이지");
+                        break;
+                    case 1:
+                        Debug.Log("회복 스테이지");
 
-                    break;
-                case 2:
-                    Debug.Log("상점 스테이지");
+                        break;
+                    case 2:
+                        Debug.Log("상점 스테이지");
 
-                    break;
-                case 3:
-                    Debug.Log("보스 스테이지");
+                        break;
+                    case 3:
+                        Debug.Log("보스 스테이지");
 
-                    break;
-                case 4:
-                    Debug.Log("빈 스테이지");
+                        break;
+                    case 4:
+                        Debug.Log("빈 스테이지");
 
-                    break;
+                        break;
+                }
             }
         }
     }
@@ -75,10 +80,7 @@ public class StageObject : MonoBehaviour
         { //히트되었다면 여기서 실행
 
             //Debug.Log (hit.collider.name);  //이 부분을 활성화 하면, 선택된 오브젝트의 이름이 찍혀 나옵니다. 
-
             target = hit.collider.gameObject;  //히트 된 게임 오브젝트를 타겟으로 지정
-            gamemanager.GetComponent<GameManager>().selected_stage = target;
         }
-
     }
 }

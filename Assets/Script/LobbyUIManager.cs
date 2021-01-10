@@ -70,7 +70,7 @@ public class LobbyUIManager : MonoBehaviour
 
     public void turnEnd()
     {
-        mBattleManager.GetComponent<BattleManager>().doEndTurn();
+        mBattleManager.GetComponent<BattleManager>().DoEndTurn();
     }
 
     #endregion

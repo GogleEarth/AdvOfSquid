@@ -179,17 +179,17 @@ namespace GenericScript
             return ret_data;
         }
 
-        public string getImageName()
+        public string GetImageName()
         {
             return image_name;
         }
 
-        public string getEffectText()
+        public string GetEffectText()
         {
             return effect_text;
         }
 
-        public string getCardName()
+        public string GetCardName()
         {
             return card_name;
         }
