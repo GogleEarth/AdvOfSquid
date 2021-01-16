@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 
     List<Card> CardList;
     List<Artifact> ArtifactList;
+    List<Monster> mMonsters;
     Sprite[] mSprites;
 
     void Start()
@@ -40,8 +41,9 @@ public class GameManager : MonoBehaviour
             Debug.Log(item.texture.name);
         }
 
-        LoadCardData();
-        //LoadArtiData();
+        loadCardData();
+        //loadArtiData();
+        loadMonsterData();
         InitPlayerDeck();
 
         game_init = true;
@@ -88,7 +90,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void LoadCardData()
+    void loadCardData()
     {
         FileStream file = new FileStream("Assets/Resources/cardtest.txt", FileMode.Open);
         StreamReader streamReader = new StreamReader(file);
@@ -160,7 +162,7 @@ public class GameManager : MonoBehaviour
         file.Close();
     }
 
-    void LoadArtiData()
+    void loadArtiData()
     {
         FileStream file = new FileStream("Assets/Resources/artitest.txt", FileMode.Open);
         StreamReader streamReader = new StreamReader(file);
@@ -232,11 +234,9 @@ public class GameManager : MonoBehaviour
         file.Close();
     }
 
-    void InitPlayerDeck()
+    void loadMonsterData()
     {
-        List<int> deck = new List<int>();
-
-        FileStream file = new FileStream("Assets/Resources/decktest.txt", FileMode.Open);
+        FileStream file = new FileStream("Assets/Resources/artitest.txt", FileMode.Open);
         StreamReader streamReader = new StreamReader(file);
 
         if (file.CanRead)
@@ -244,10 +244,55 @@ public class GameManager : MonoBehaviour
             while (!streamReader.EndOfStream)
             {
                 string input_text = streamReader.ReadLine();
-                deck.Add(int.Parse(input_text));
+
+                if (input_text == "Info")
+                {
+                    string card_name = streamReader.ReadLine();
+                    string image_name = streamReader.ReadLine();
+                    string flavor_text = streamReader.ReadLine();
+                    string effect_text = streamReader.ReadLine();
+                    string data = streamReader.ReadLine();
+                    if (data == "Target")
+                    {
+                        data = streamReader.ReadLine();
+                        while (data != "Category")
+                        {
+                            artiTargets.Add((ArtifactTarget)int.Parse(data));
+                            data = streamReader.ReadLine();
+                        }
+                    }
+                    if (data == "Category")
+                    {
+                        data = streamReader.ReadLine();
+                        while (data != "Value")
+                        {
+                            artiCategorys.Add((ArtifactCategory)int.Parse(data));
+                            data = streamReader.ReadLine();
+                        }
+                    }
+                    if (data == "Value")
+                    {
+                        data = streamReader.ReadLine();
+                        while (data != "End")
+                        {
+                            artiValues.Add(int.Parse(data));
+                            data = streamReader.ReadLine();
+                        }
+                    }
+
+                    for (int i = 0; i < artiTargets.Count; i++)
+                    {
+                        artiEffects.Add(new ArtifactEffect(artiTargets[i], artiCategorys[i], artiValues[i]));
+                    }
+
+                    ArtifactList.Add(new Artifact(card_name, image_name, flavor_text, effect_text, artiEffects));
+                }
             }
 
-            player.Deck = deck;
+            foreach (Artifact arti in ArtifactList)
+            {
+                Debug.Log(arti.Display());
+            }
         }
         else
         {
@@ -282,6 +327,31 @@ public class GameManager : MonoBehaviour
     public Card FindCard(int index)
     {
         return CardList[index];
+    }
+
+    public void InitPlayerDeck()
+    {
+        List<int> deck = new List<int>();
+
+        FileStream file = new FileStream("Assets/Resources/decktest.txt", FileMode.Open);
+        StreamReader streamReader = new StreamReader(file);
+
+        if (file.CanRead)
+        {
+            while (!streamReader.EndOfStream)
+            {
+                string input_text = streamReader.ReadLine();
+                deck.Add(int.Parse(input_text));
+            }
+
+            player.Deck = deck;
+        }
+        else
+        {
+            Debug.Log("flie not found!");
+        }
+
+        file.Close();
     }
 
     #endregion

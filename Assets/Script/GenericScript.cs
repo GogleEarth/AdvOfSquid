@@ -195,4 +195,130 @@ namespace GenericScript
         }
     }
 
+    public enum SkillTarget
+    {
+        Own,
+        Enemy,
+        Both
+    }
+
+    public enum SkillCategory
+    {
+        Deal,
+        Heal,
+        Shield,
+        Poison,
+        Bleeding,
+        Freezing,
+        Sleep
+    }
+
+    public class SkillEffect
+    {
+        SkillTarget Target;
+        public SkillTarget target
+        {
+            get { return Target; }
+            set { Target = value; }
+        }
+
+        SkillCategory Category;
+        public SkillCategory category
+        {
+            get { return Category; }
+            set { Category = value; }
+        }
+
+        int Value;
+        public int value
+        {
+            get { return Value; }
+            set { Value = value; }
+        }
+
+        int Cooltime;
+        public int cooltime
+        {
+            get { return Cooltime; }
+            set { Cooltime = value; }
+        }
+
+        public SkillEffect() { }
+
+        public SkillEffect(SkillTarget t, SkillCategory c, int v, int ct)
+        {
+            Target = t;
+            Category = c;
+            Value = v;
+            cooltime = ct;
+        }
+
+        public string Display()
+        {
+            return Target + " " + Category + " " + Value + " " + Cooltime + "\n";
+        }
+
+    }
+
+    public class Skill
+    {
+        string mSkillName;
+        string mSkillText;
+        string mSkillIconName;
+        List<SkillEffect> mSkillEffects;
+
+        public string Display()
+        {
+            string ret_data = mSkillName + "\n" + mSkillText + "\n" + mSkillIconName + "\n";
+
+            foreach (SkillEffect effect in mSkillEffects)
+            {
+                ret_data += effect.Display();
+            }
+
+            return ret_data;
+        }
+    }
+
+    public class Monster
+    {
+        string mMonsterName;
+        string mSpriteName;
+        float mEXP;
+        int mLV;
+        int mATK;
+        int mDEF;
+        int mHP;
+        float mSPD;
+        List<int> mSkills;
+
+        public Monster(string monname, string imgname, 
+            float exp, int lv, int atk, int def, int hp, float spd, 
+            List<int> skills)
+        {
+            mMonsterName = monname;
+            mSpriteName = imgname;
+            mEXP = exp;
+            mLV = lv;
+            mATK = atk;
+            mDEF = def;
+            mHP = hp;
+            mSPD = spd;
+            mSkills = skills;
+        }
+
+        public string Display()
+        {
+            string ret_data = mMonsterName + "\n" + mSpriteName + "\n";
+
+            foreach (int skill in mSkills)
+            {
+                ret_data += skill + " ,";
+            }
+
+            return ret_data;
+        }
+
+    }
+
 }

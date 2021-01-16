@@ -9,10 +9,11 @@ public class BattleManager : MonoBehaviour
     #region PUBLIC
     public GameObject mCardPrefab;
     public GameObject mBattleStage;
-    public GameObject mPlayer;
     public GameObject mGameManager;
+    public GameObject mPlayer;
     public GameObject mPlayerIcon;
     public GameObject mEnemyIcon;
+    public GameObject mEnemy;
 
     #endregion
 
@@ -78,7 +79,7 @@ public class BattleManager : MonoBehaviour
 
             if (!mIsSomebodysTurn)
             {
-                mPlayerTurnGuage += mPlayer.GetComponent<Player>().getSpeed() / 100.0f;
+                mPlayerTurnGuage += mPlayer.GetComponent<Player>().GetSpeed() / 100.0f;
                 Vector3 playerIconPositon = mPlayerIcon.transform.localPosition;
                 playerIconPositon.y = mPlayerTurnGuage * -6.0f + 300.0f;
                 mPlayerIcon.transform.localPosition = playerIconPositon;
@@ -94,25 +95,29 @@ public class BattleManager : MonoBehaviour
         {
             for (int i = 0; i < numberOfCard; i++)
             {
-                int drawnCardIndex = mPlayer.GetComponent<Player>().drawCard(mCurrnetCardIndex++);
-                if (drawnCardIndex == -1) Debug.Log("OutOfIndex");
-                else
+                int drawnCardIndex = mPlayer.GetComponent<Player>().DrawCard(mCurrnetCardIndex++);
+                if (drawnCardIndex == -1)
                 {
-                    GameObject card = Instantiate(mCardPrefab);
-                    RectTransform cardPosition = card.GetComponent<RectTransform>();
-                    cardPosition.SetParent(mBattleStage.transform.Find("Hand").transform.Find("HorizontalLayoutGroup"));
-                    cardPosition.position = mBattleStage.transform.Find("Hand").position;
-                    Card drawnCard = mGameManager.GetComponent<GameManager>().FindCard(drawnCardIndex);
-                    string imageName = drawnCard.GetImageName();
-                    card.transform.Find("CardImage").gameObject.GetComponent<Image>().sprite =
-                        mGameManager.GetComponent<GameManager>().FindImageByName(imageName.Substring(0, imageName.Length-4));
-                    card.transform.Find("TextPanel").transform.Find("CardText").GetComponent<Text>().text =
-                        drawnCard.GetEffectText();
-                    card.name = drawnCard.GetCardName();
-                    card.GetComponent<CardObject>().Init(drawnCard);
-
-                    mPlayerHand++;
+                    Debug.Log("OutOfIndex");
+                    mPlayer.GetComponent<Player>().Shuffle();
+                    drawnCardIndex = 0;
+                    mCurrnetCardIndex = 0;
                 }
+
+                GameObject card = Instantiate(mCardPrefab);
+                RectTransform cardPosition = card.GetComponent<RectTransform>();
+                cardPosition.SetParent(mBattleStage.transform.Find("Hand").transform.Find("HorizontalLayoutGroup"));
+                cardPosition.position = mBattleStage.transform.Find("Hand").position;
+                Card drawnCard = mGameManager.GetComponent<GameManager>().FindCard(drawnCardIndex);
+                string imageName = drawnCard.GetImageName();
+                card.transform.Find("CardImage").gameObject.GetComponent<Image>().sprite =
+                    mGameManager.GetComponent<GameManager>().FindImageByName(imageName.Substring(0, imageName.Length - 4));
+                card.transform.Find("TextPanel").transform.Find("CardText").GetComponent<Text>().text =
+                    drawnCard.GetEffectText();
+                card.name = drawnCard.GetCardName();
+                card.GetComponent<CardObject>().Init(drawnCard);
+
+                mPlayerHand++;
             }
         }
     }
