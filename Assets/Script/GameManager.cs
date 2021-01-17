@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     List<Card> CardList;
     List<Artifact> ArtifactList;
     List<Monster> mMonsters;
+    List<Skill> mSkills;
     Sprite[] mSprites;
 
     void Start()
@@ -33,7 +34,8 @@ public class GameManager : MonoBehaviour
 
         CardList = new List<Card>();
         ArtifactList = new List<Artifact>();
-
+        mSkills = new List<Skill>();
+        mMonsters = new List<Monster>();
         mSprites = Resources.LoadAll<Sprite>("Image");
 
         foreach (var item in mSprites)
@@ -43,6 +45,7 @@ public class GameManager : MonoBehaviour
 
         loadCardData();
         //loadArtiData();
+        loadSkillData();
         loadMonsterData();
         InitPlayerDeck();
 
@@ -236,7 +239,7 @@ public class GameManager : MonoBehaviour
 
     void loadMonsterData()
     {
-        FileStream file = new FileStream("Assets/Resources/artitest.txt", FileMode.Open);
+        FileStream file = new FileStream("Assets/Resources/monstertest.txt", FileMode.Open);
         StreamReader streamReader = new StreamReader(file);
 
         if (file.CanRead)
@@ -247,51 +250,109 @@ public class GameManager : MonoBehaviour
 
                 if (input_text == "Info")
                 {
-                    string card_name = streamReader.ReadLine();
-                    string image_name = streamReader.ReadLine();
-                    string flavor_text = streamReader.ReadLine();
-                    string effect_text = streamReader.ReadLine();
+                    string monstername = streamReader.ReadLine();
+                    string imagename = streamReader.ReadLine();
+                    float exp = float.Parse(streamReader.ReadLine());
+                    float spd = float.Parse(streamReader.ReadLine());
+                    int lv = int.Parse(streamReader.ReadLine());
+                    int atk = int.Parse(streamReader.ReadLine());
+                    int def = int.Parse(streamReader.ReadLine());
+                    int hp = int.Parse(streamReader.ReadLine());
+                    List<int> skills = new List<int>();
                     string data = streamReader.ReadLine();
+
+                    if (data == "Skill")
+                    {
+                        data = streamReader.ReadLine();
+                        while (data != "End")
+                        {
+                            skills.Add(int.Parse(data));
+                            data = streamReader.ReadLine();
+                        }
+                    }
+
+                    mMonsters.Add(new Monster(monstername, imagename, exp, lv, atk, def, hp, spd, skills));
+                }
+            }
+
+            foreach (Monster monster in mMonsters)
+            {
+                Debug.Log(monster.Display());
+            }
+        }
+        else
+        {
+            Debug.Log("flie not found!");
+        }
+
+        file.Close();
+    }
+
+    void loadSkillData()
+    {
+        FileStream file = new FileStream("Assets/Resources/skilltest.txt", FileMode.Open);
+        StreamReader streamReader = new StreamReader(file);
+
+        if (file.CanRead)
+        {
+            while (!streamReader.EndOfStream)
+            {
+                string input_text = streamReader.ReadLine();
+                List<SkillEffect> skillEffects = new List<SkillEffect>();
+                List<SkillTarget> skillTargets = new List<SkillTarget>();
+                List<SkillCategory> skillCategorys = new List<SkillCategory>();
+                List<int> skillValues = new List<int>();
+
+                if (input_text == "Info")
+                {
+                    string skillName = streamReader.ReadLine();
+                    string skillIconName = streamReader.ReadLine();
+                    string skillText = streamReader.ReadLine();
+                    int cooltime = int.Parse(streamReader.ReadLine());
+                    string data = streamReader.ReadLine();
+
                     if (data == "Target")
                     {
                         data = streamReader.ReadLine();
                         while (data != "Category")
                         {
-                            artiTargets.Add((ArtifactTarget)int.Parse(data));
+                            skillTargets.Add((SkillTarget)int.Parse(data));
                             data = streamReader.ReadLine();
                         }
                     }
+
                     if (data == "Category")
                     {
                         data = streamReader.ReadLine();
                         while (data != "Value")
                         {
-                            artiCategorys.Add((ArtifactCategory)int.Parse(data));
+                            skillCategorys.Add((SkillCategory)int.Parse(data));
                             data = streamReader.ReadLine();
                         }
                     }
+
                     if (data == "Value")
                     {
                         data = streamReader.ReadLine();
                         while (data != "End")
                         {
-                            artiValues.Add(int.Parse(data));
+                            skillValues.Add(int.Parse(data));
                             data = streamReader.ReadLine();
                         }
                     }
 
-                    for (int i = 0; i < artiTargets.Count; i++)
+                    for (int i = 0; i < skillTargets.Count; i++)
                     {
-                        artiEffects.Add(new ArtifactEffect(artiTargets[i], artiCategorys[i], artiValues[i]));
+                        skillEffects.Add(new SkillEffect(skillTargets[i], skillCategorys[i], skillValues[i]));
                     }
 
-                    ArtifactList.Add(new Artifact(card_name, image_name, flavor_text, effect_text, artiEffects));
+                    mSkills.Add(new Skill(skillName, skillIconName, skillText, skillEffects, cooltime));
                 }
             }
 
-            foreach (Artifact arti in ArtifactList)
+            foreach (Skill skill in mSkills)
             {
-                Debug.Log(arti.Display());
+                Debug.Log(skill.Display());
             }
         }
         else
@@ -352,6 +413,14 @@ public class GameManager : MonoBehaviour
         }
 
         file.Close();
+    }
+
+    public Monster GetMonsterByIndex(int index)
+    {
+        if (index <= mMonsters.Count)
+            return mMonsters[index];
+        else
+            return mMonsters[0];
     }
 
     #endregion

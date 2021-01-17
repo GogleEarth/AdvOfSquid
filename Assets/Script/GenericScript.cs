@@ -236,26 +236,18 @@ namespace GenericScript
             set { Value = value; }
         }
 
-        int Cooltime;
-        public int cooltime
-        {
-            get { return Cooltime; }
-            set { Cooltime = value; }
-        }
-
         public SkillEffect() { }
 
-        public SkillEffect(SkillTarget t, SkillCategory c, int v, int ct)
+        public SkillEffect(SkillTarget t, SkillCategory c, int v)
         {
             Target = t;
             Category = c;
             Value = v;
-            cooltime = ct;
         }
 
         public string Display()
         {
-            return Target + " " + Category + " " + Value + " " + Cooltime + "\n";
+            return Target + "\n" + Category + "\n" + Value + "\n";
         }
 
     }
@@ -266,10 +258,21 @@ namespace GenericScript
         string mSkillText;
         string mSkillIconName;
         List<SkillEffect> mSkillEffects;
+        int mCooltime;
+
+        public Skill(string skillname, string skilliconname, string skilltext,
+            List<SkillEffect> skilleffects, int cooltime)
+        {
+            mSkillName = skillname;
+            mSkillText = skilltext;
+            mSkillIconName = skilliconname;
+            mSkillEffects = skilleffects;
+            mCooltime = cooltime;
+        }
 
         public string Display()
         {
-            string ret_data = mSkillName + "\n" + mSkillText + "\n" + mSkillIconName + "\n";
+            string ret_data = mSkillName + "\n" + mSkillIconName + "\n" + mSkillText + "\n" + mCooltime + "\n";
 
             foreach (SkillEffect effect in mSkillEffects)
             {
@@ -317,6 +320,41 @@ namespace GenericScript
             }
 
             return ret_data;
+        }
+
+        public float GetEXP()
+        {
+            return mEXP;
+        }
+
+        public int GetLV()
+        {
+            return mLV;
+        }
+
+        public int GetATK()
+        {
+            return mATK;
+        }
+
+        public int GetDEF()
+        {
+            return mDEF;
+        }
+
+        public int GetHP()
+        {
+            return mHP;
+        }
+
+        public float GetSPD()
+        {
+            return mSPD;
+        }
+
+        public List<int> GetSkills()
+        {
+            return mSkills;
         }
 
     }

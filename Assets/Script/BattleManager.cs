@@ -41,12 +41,19 @@ public class BattleManager : MonoBehaviour
         mIsSomebodysTurn = false;
         mIsPlayerTurnEnd = false;
         mIsPlayerTurn = false;
+        if (gameStart)
+        {
+            mEnemy.GetComponent<Enemy>().InitByMonsterData(mGameManager.GetComponent<GameManager>().GetMonsterByIndex(Random.Range(0,2)));
+            mEnemy.GetComponent<Enemy>().Init(mGameManager.GetComponent<GameManager>().floor);
+        }
     }
 
     public void DoEndTurn()
     {
-        if(mIsPlayerTurn)
+        if (mIsPlayerTurn)
+        {
             mIsPlayerTurnEnd = true;
+        }
     }
 
     public bool IsBattleStart()
@@ -65,7 +72,7 @@ public class BattleManager : MonoBehaviour
     {
         if(mIsBattleStart && !mIsPause)
         {
-            if(mPlayerTurnGuage >= 100.0f)
+            if (mPlayerTurnGuage >= 100.0f)
             {
                 mIsSomebodysTurn = true;
                 mIsPlayerTurn = true;
@@ -77,6 +84,13 @@ public class BattleManager : MonoBehaviour
                 mPlayerTurnGuage = 0.0f;
             }
 
+            if (mEnemyTurnGuage >= 100.0f)
+            {
+                mIsSomebodysTurn = true;
+                StartCoroutine("enemyTurnCoroutine");
+                mEnemyTurnGuage = 0.0f;
+            }
+
             if (!mIsSomebodysTurn)
             {
                 mPlayerTurnGuage += mPlayer.GetComponent<Player>().GetSpeed() / 100.0f;
@@ -85,6 +99,10 @@ public class BattleManager : MonoBehaviour
                 mPlayerIcon.transform.localPosition = playerIconPositon;
 
 
+                mEnemyTurnGuage += mEnemy.GetComponent<Enemy>().GetSpeed() / 100.0f;
+                Vector3 enemyIconPositon = mEnemyIcon.transform.localPosition;
+                enemyIconPositon.y = mEnemyTurnGuage * -6.0f + 300.0f;
+                mEnemyIcon.transform.localPosition = enemyIconPositon;
             }
         }
     }
@@ -136,6 +154,12 @@ public class BattleManager : MonoBehaviour
                 yield break;
             }
         }
+    }
+
+    IEnumerator enemyTurnCoroutine()
+    {
+        mIsSomebodysTurn = false;
+        yield return null;
     }
 
     #endregion

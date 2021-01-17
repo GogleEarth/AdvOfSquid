@@ -13,10 +13,12 @@ public class Enemy : MonoBehaviour
 
     int mLV;
     float mEXP;
-    int mHP;
+    int mMaxHP;
+    int mCurrentHP;
     int mATK;
     int mDEF;
     float mSPD;
+    List<int> mSkills;
 
     #endregion
 
@@ -29,13 +31,26 @@ public class Enemy : MonoBehaviour
         mLV += floor;
         mATK += (int)(floor * 0.5f);
         mDEF += (int)(floor * 0.5f);
-        mHP += (int)(floor * 2.5f);
+        mMaxHP += (int)(floor * 2.5f);
         mSPD += (int)(floor * 0.5f);
+        mCurrentHP = mMaxHP;
     }
 
     public void InitByMonsterData(Monster monster)
     {
+        Debug.Log(monster.Display());
+        mEXP = monster.GetEXP();
+        mLV = monster.GetLV();
+        mATK = monster.GetATK();
+        mDEF = monster.GetDEF();
+        mMaxHP = monster.GetHP();
+        mSPD = monster.GetSPD();
+        mSkills = monster.GetSkills();
+    }
 
+    public float GetSpeed()
+    {
+        return mSPD;
     }
 
     #endregion
