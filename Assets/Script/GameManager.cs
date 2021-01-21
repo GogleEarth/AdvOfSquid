@@ -252,6 +252,7 @@ public class GameManager : MonoBehaviour
                 {
                     string monstername = streamReader.ReadLine();
                     string imagename = streamReader.ReadLine();
+                    string iconname = streamReader.ReadLine();
                     float exp = float.Parse(streamReader.ReadLine());
                     float spd = float.Parse(streamReader.ReadLine());
                     int lv = int.Parse(streamReader.ReadLine());
@@ -271,7 +272,7 @@ public class GameManager : MonoBehaviour
                         }
                     }
 
-                    mMonsters.Add(new Monster(monstername, imagename, exp, lv, atk, def, hp, spd, skills));
+                    mMonsters.Add(new Monster(monstername, imagename, iconname, exp, lv, atk, def, hp, spd, skills));
                 }
             }
 

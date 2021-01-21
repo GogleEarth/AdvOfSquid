@@ -1,6 +1,7 @@
 Info
 testmonster1
-exit.png
+exit
+black_paw
 10
 5
 1
@@ -14,7 +15,8 @@ Skill
 End
 Info
 testmonster2
-exit.png
+exit
+black_paw
 10
 20
 1
@@ -28,7 +30,8 @@ Skill
 End
 Info
 testmonster3
-exit.png
+exit
+black_paw
 30
 5
 5

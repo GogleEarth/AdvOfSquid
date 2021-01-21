@@ -45,6 +45,12 @@ public class BattleManager : MonoBehaviour
         {
             mEnemy.GetComponent<Enemy>().InitByMonsterData(mGameManager.GetComponent<GameManager>().GetMonsterByIndex(Random.Range(0,2)));
             mEnemy.GetComponent<Enemy>().Init(mGameManager.GetComponent<GameManager>().floor);
+            mEnemyIcon.GetComponent<Image>().sprite = 
+                mGameManager.GetComponent<GameManager>().
+                FindImageByName(mEnemy.GetComponent<Enemy>().GetIconName());
+            //mPlayerIcon.GetComponent<Image>().sprite = 
+            //    mGameManager.GetComponent<GameManager>().
+            //    FindImageByName(mPlayer.GetComponent<Player>().GetIconName());
         }
     }
 
@@ -129,7 +135,7 @@ public class BattleManager : MonoBehaviour
                 Card drawnCard = mGameManager.GetComponent<GameManager>().FindCard(drawnCardIndex);
                 string imageName = drawnCard.GetImageName();
                 card.transform.Find("CardImage").gameObject.GetComponent<Image>().sprite =
-                    mGameManager.GetComponent<GameManager>().FindImageByName(imageName.Substring(0, imageName.Length - 4));
+                    mGameManager.GetComponent<GameManager>().FindImageByName(imageName);
                 card.transform.Find("TextPanel").transform.Find("CardText").GetComponent<Text>().text =
                     drawnCard.GetEffectText();
                 card.name = drawnCard.GetCardName();

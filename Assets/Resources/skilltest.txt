@@ -1,6 +1,6 @@
 Info
 testskill1
-exit.png
+exit
 testtext
 0
 Target
@@ -18,7 +18,7 @@ Value
 End
 Info
 testskill2
-exit.png
+exit
 testtext
 2
 Target
@@ -30,7 +30,7 @@ Value
 End
 Info
 testskill3
-exit.png
+exit
 testtext
 3
 Target

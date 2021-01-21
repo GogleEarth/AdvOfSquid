@@ -287,6 +287,7 @@ namespace GenericScript
     {
         string mMonsterName;
         string mSpriteName;
+        string mIconName;
         float mEXP;
         int mLV;
         int mATK;
@@ -295,12 +296,13 @@ namespace GenericScript
         float mSPD;
         List<int> mSkills;
 
-        public Monster(string monname, string imgname, 
+        public Monster(string monname, string imgname, string iconname, 
             float exp, int lv, int atk, int def, int hp, float spd, 
             List<int> skills)
         {
             mMonsterName = monname;
             mSpriteName = imgname;
+            mIconName = iconname;
             mEXP = exp;
             mLV = lv;
             mATK = atk;
@@ -312,7 +314,7 @@ namespace GenericScript
 
         public string Display()
         {
-            string ret_data = mMonsterName + "\n" + mSpriteName + "\n";
+            string ret_data = mMonsterName + "\n" + mSpriteName + "\n" + mIconName + "\n";
 
             foreach (int skill in mSkills)
             {
@@ -355,6 +357,16 @@ namespace GenericScript
         public List<int> GetSkills()
         {
             return mSkills;
+        }
+
+        public string GetSpriteName()
+        {
+            return mSpriteName;
+        }
+
+        public string GetIconName()
+        {
+            return mIconName;
         }
 
     }

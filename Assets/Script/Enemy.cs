@@ -18,6 +18,8 @@ public class Enemy : MonoBehaviour
     int mATK;
     int mDEF;
     float mSPD;
+    string mSpriteName;
+    string mIconName;
     List<int> mSkills;
 
     #endregion
@@ -46,11 +48,23 @@ public class Enemy : MonoBehaviour
         mMaxHP = monster.GetHP();
         mSPD = monster.GetSPD();
         mSkills = monster.GetSkills();
+        mSpriteName = monster.GetSpriteName();
+        mIconName = monster.GetIconName();
     }
 
     public float GetSpeed()
     {
         return mSPD;
+    }
+
+    public string GetSpriteName()
+    {
+        return mSpriteName;
+    }
+
+    public string GetIconName()
+    {
+        return mIconName;
     }
 
     #endregion
