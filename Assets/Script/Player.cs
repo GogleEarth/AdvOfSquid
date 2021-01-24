@@ -12,8 +12,10 @@ public class Player : MonoBehaviour
     int level;
     float mMaxEXP;
     float mCurrentEXP;
-    int hp;
-    int cost;
+    int mMaxHP;
+    int mCurrentHP;
+    int mMaxCost;
+    int mCurrentCost;
     int ATK;
     int DEF;
     float SPD;
@@ -40,7 +42,7 @@ public class Player : MonoBehaviour
             Shuffle();
             game_manager.game_init = false;
         }
-        if (hp <= 0)
+        if (mCurrentHP <= 0)
         {
             deck = null;
         }
@@ -53,11 +55,13 @@ public class Player : MonoBehaviour
         level = 1;
         mCurrentEXP = 0.0f;
         mMaxEXP = 100.0f;
-        hp = 10;
-        cost = 5;
+        mMaxHP = 10;
+        mCurrentHP = mMaxHP;
+        mMaxCost = 5;
+        mCurrentCost = mMaxCost;
         ATK = 1;
         DEF = 1;
-        SPD = 10.0f;
+        SPD = 30.0f;
     }
 
     #region PUBLIC_METHOD
@@ -71,6 +75,31 @@ public class Player : MonoBehaviour
     public float GetSpeed()
     {
         return SPD;
+    }
+
+    public int GetCurrentHP()
+    {
+        return mCurrentHP;
+    }
+
+    public int GetMaxHP()
+    {
+        return mMaxHP;
+    }
+
+    public int GetCurrentCost()
+    {
+        return mCurrentCost;
+    }
+
+    public int GetMaxCost()
+    {
+        return mMaxCost;
+    }
+
+    public void SetCurrentCost(int cost)
+    {
+        mCurrentCost = cost;
     }
 
     public void Shuffle()
@@ -91,6 +120,28 @@ public class Player : MonoBehaviour
             log += card + "\n";
         }
         Debug.Log(log);
+    }
+
+    public void ApplyCardEffect(CardCategory category, int value)
+    {
+        switch (category)
+        {
+            case CardCategory.Deal:
+                {
+                    mCurrentHP -= value;
+                    break;
+                }
+            case CardCategory.Heal:
+                {
+                    if (mCurrentHP < mMaxHP)
+                    {
+                        mCurrentHP += value;
+                    }
+                    break;
+                }
+        }
+
+        Debug.Log("Player hp : " + mCurrentHP);
     }
 
     #endregion

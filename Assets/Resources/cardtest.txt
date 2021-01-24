@@ -1,51 +1,58 @@
 Info
-testcard
+공격
 exit
-testtext
-testeffect
+단순히 적을 공격한다.
+적에게 1의 피해를 입힌다.
+1
 Target
-0
-1
-2
+Enemy
 Category
-0
-1
-2
-Value
-1
-2
-3
-End
-Info
-testcard2
-exit
-testtext2
-testeffect2
-Target
-0
-Category
-0
+Deal
 Value
 1
 End
 Info
-testcard3
+회복
 exit
-testtext3
-testeffect3
+체력을 회복한다.
+자신의 HP를 1회복한다.
+1
 Target
-0
-0
-0
-1
+Own
 Category
-0
-0
-0
+Heal
+Value
 1
+End
+Info
+이판사판태클
+exit
+너죽고 나죽자
+적에게 2의 피해를 입히고, 자신은 1의 피해를 입는다
+2
+Target
+Enemy
+Own
+Category
+Deal
+Deal
+Value
+2
+1
+End
+Info
+2연격
+exit
+고양이 마을의 바람은 두번 친다.
+적에게 1의 피해를 두번 입힌다.
+2
+Target
+Enemy
+Enemy
+Category
+Deal
+Deal
 Value
 1
 1
-2
-2
 End

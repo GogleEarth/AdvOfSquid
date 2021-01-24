@@ -114,13 +114,14 @@ public class GameManager : MonoBehaviour
                     string image_name = streamReader.ReadLine();
                     string flavor_text = streamReader.ReadLine();
                     string effect_text = streamReader.ReadLine();
+                    string cost = streamReader.ReadLine();
                     string data = streamReader.ReadLine();
                     if (data == "Target")
                     {
                         data = streamReader.ReadLine();
                         while (data != "Category")
                         {
-                            cardTargets.Add((CardTarget)int.Parse(data));
+                            cardTargets.Add(GetEnumFromString<CardTarget>(data));
                             data = streamReader.ReadLine();
                         }
                     }
@@ -129,7 +130,7 @@ public class GameManager : MonoBehaviour
                         data = streamReader.ReadLine();
                         while (data != "Value")
                         {
-                            cardCategorys.Add((CardCategory)int.Parse(data));
+                            cardCategorys.Add(GetEnumFromString<CardCategory>(data));
                             data = streamReader.ReadLine();
                         }
                     }
@@ -148,7 +149,7 @@ public class GameManager : MonoBehaviour
                         cardEffects.Add(new CardEffect(cardTargets[i], cardCategorys[i], cardValues[i]));
                     }
 
-                    CardList.Add(new Card(card_name, image_name, flavor_text, effect_text, cardEffects));
+                    CardList.Add(new Card(card_name, image_name, flavor_text, effect_text, int.Parse(cost), cardEffects));
                 }
             }
 
@@ -317,7 +318,7 @@ public class GameManager : MonoBehaviour
                         data = streamReader.ReadLine();
                         while (data != "Category")
                         {
-                            skillTargets.Add((SkillTarget)int.Parse(data));
+                            skillTargets.Add(GetEnumFromString<SkillTarget>(data));
                             data = streamReader.ReadLine();
                         }
                     }
@@ -327,7 +328,7 @@ public class GameManager : MonoBehaviour
                         data = streamReader.ReadLine();
                         while (data != "Value")
                         {
-                            skillCategorys.Add((SkillCategory)int.Parse(data));
+                            skillCategorys.Add(GetEnumFromString<SkillCategory>(data));
                             data = streamReader.ReadLine();
                         }
                     }
@@ -362,6 +363,11 @@ public class GameManager : MonoBehaviour
         }
 
         file.Close();
+    }
+
+    T GetEnumFromString<T>(string data)
+    {
+        return EnumUtil<T>.Parse(data);
     }
 
     #region PUBLIC_METHOD

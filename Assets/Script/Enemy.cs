@@ -67,6 +67,24 @@ public class Enemy : MonoBehaviour
         return mIconName;
     }
 
+    public void ApplyCardEffect(CardCategory category, int value)
+    {
+        switch (category)
+        {
+            case CardCategory.Deal:
+                {
+                    mCurrentHP -= value;
+                    break;
+                }
+            case CardCategory.Heal:
+                {
+                    mCurrentHP += value;
+                    break;
+                }
+        }
+        Debug.Log("enemy hp : " + mCurrentHP);
+    }
+
     #endregion
 
     #region PRIVATE_METHOD

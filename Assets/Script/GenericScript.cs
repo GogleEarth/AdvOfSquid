@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace GenericScript
 {
@@ -155,14 +156,16 @@ namespace GenericScript
         string image_name;
         string flavor_text;
         string effect_text;
+        int mCost;
         List<CardEffect> effects;
         public Card(string ca_name, string img_name, string flav_text,
-            string eff_text, List<CardEffect> eff)
+            string eff_text, int cost,  List<CardEffect> eff)
         {
             card_name = ca_name;
             image_name = img_name;
             flavor_text = flav_text;
             effect_text = eff_text;
+            mCost = cost;
             effects = eff;
         }
 
@@ -192,6 +195,16 @@ namespace GenericScript
         public string GetCardName()
         {
             return card_name;
+        }
+
+        public List<CardEffect> GetCardEffects()
+        {
+            return effects;
+        }
+
+        public int GetCost()
+        {
+            return mCost;
         }
     }
 
@@ -370,5 +383,14 @@ namespace GenericScript
         }
 
     }
+
+    public static class EnumUtil<T> 
+    {
+        public static T Parse(string s) 
+        {
+            return (T)Enum.Parse(typeof(T), s); 
+        }
+    }
+
 
 }
