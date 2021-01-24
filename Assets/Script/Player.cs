@@ -10,8 +10,8 @@ public class Player : MonoBehaviour
 
     GameManager game_manager;
     int level;
-    float mMaxEXP;
-    float mCurrentEXP;
+    int mMaxEXP;
+    int mCurrentEXP;
     int mMaxHP;
     int mCurrentHP;
     int mMaxCost;
@@ -53,8 +53,8 @@ public class Player : MonoBehaviour
         inventory.Clear();
         game_manager.InitPlayerDeck();
         level = 1;
-        mCurrentEXP = 0.0f;
-        mMaxEXP = 100.0f;
+        mCurrentEXP = 0;
+        mMaxEXP = 100;
         mMaxHP = 10;
         mCurrentHP = mMaxHP;
         mMaxCost = 5;
@@ -75,6 +75,11 @@ public class Player : MonoBehaviour
     public float GetSpeed()
     {
         return SPD;
+    }
+
+    public int GetAtk()
+    {
+        return ATK;
     }
 
     public int GetCurrentHP()
@@ -128,7 +133,9 @@ public class Player : MonoBehaviour
         {
             case CardCategory.Deal:
                 {
-                    mCurrentHP -= value;
+                    int deal = value - DEF;
+                    if (deal > 0)
+                        mCurrentHP -= deal;
                     break;
                 }
             case CardCategory.Heal:
@@ -142,6 +149,18 @@ public class Player : MonoBehaviour
         }
 
         Debug.Log("Player hp : " + mCurrentHP);
+    }
+
+    public void AddEXP(int exp)
+    {
+        mCurrentEXP += exp;
+        if(mCurrentEXP > mMaxEXP)
+        {
+            level += 1;
+            mCurrentEXP -= mMaxEXP;
+            mMaxEXP += level * 100;
+            mCurrentEXP = 0;
+        }
     }
 
     #endregion

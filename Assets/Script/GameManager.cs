@@ -254,7 +254,7 @@ public class GameManager : MonoBehaviour
                     string monstername = streamReader.ReadLine();
                     string imagename = streamReader.ReadLine();
                     string iconname = streamReader.ReadLine();
-                    float exp = float.Parse(streamReader.ReadLine());
+                    int exp = int.Parse(streamReader.ReadLine());
                     float spd = float.Parse(streamReader.ReadLine());
                     int lv = int.Parse(streamReader.ReadLine());
                     int atk = int.Parse(streamReader.ReadLine());

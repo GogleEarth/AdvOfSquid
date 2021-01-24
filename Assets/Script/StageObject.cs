@@ -27,29 +27,6 @@ public class StageObject : MonoBehaviour
                 GetComponent<BattleManager>().IsBattleStart())
             {
                 gamemanager.GetComponent<GameManager>().selected_stage = target;
-                switch (type)
-                {
-                    case 0:
-                        Debug.Log("전투 스테이지");
-
-                        break;
-                    case 1:
-                        Debug.Log("회복 스테이지");
-
-                        break;
-                    case 2:
-                        Debug.Log("상점 스테이지");
-
-                        break;
-                    case 3:
-                        Debug.Log("보스 스테이지");
-
-                        break;
-                    case 4:
-                        Debug.Log("빈 스테이지");
-
-                        break;
-                }
             }
         }
     }

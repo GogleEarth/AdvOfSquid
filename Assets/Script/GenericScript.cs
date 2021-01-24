@@ -301,7 +301,7 @@ namespace GenericScript
         string mMonsterName;
         string mSpriteName;
         string mIconName;
-        float mEXP;
+        int mEXP;
         int mLV;
         int mATK;
         int mDEF;
@@ -310,7 +310,7 @@ namespace GenericScript
         List<int> mSkills;
 
         public Monster(string monname, string imgname, string iconname, 
-            float exp, int lv, int atk, int def, int hp, float spd, 
+            int exp, int lv, int atk, int def, int hp, float spd, 
             List<int> skills)
         {
             mMonsterName = monname;
@@ -337,7 +337,7 @@ namespace GenericScript
             return ret_data;
         }
 
-        public float GetEXP()
+        public int GetEXP()
         {
             return mEXP;
         }

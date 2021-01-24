@@ -10,7 +10,7 @@ public class CardObject : MonoBehaviour,
 {
     #region PUBLIC
 
-     
+    
 
     #endregion
 

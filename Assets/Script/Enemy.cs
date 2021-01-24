@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     #region PRIVATE
 
     int mLV;
-    float mEXP;
+    int mEXP;
     int mMaxHP;
     int mCurrentHP;
     int mATK;
@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
 
     public void Init(int floor)
     {
-        mEXP += floor * 2.5f;
+        mEXP += floor * 2;
         mLV += floor;
         mATK += (int)(floor * 0.5f);
         mDEF += (int)(floor * 0.5f);
@@ -67,13 +67,25 @@ public class Enemy : MonoBehaviour
         return mIconName;
     }
 
+    public int GetCurrentHP()
+    {
+        return mCurrentHP;
+    }
+
+    public int GetEXP()
+    {
+        return mEXP;
+    }
+
     public void ApplyCardEffect(CardCategory category, int value)
     {
         switch (category)
         {
             case CardCategory.Deal:
                 {
-                    mCurrentHP -= value;
+                    int deal = value - mDEF;
+                    if (deal > 0)
+                        mCurrentHP -= deal;
                     break;
                 }
             case CardCategory.Heal:

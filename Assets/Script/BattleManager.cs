@@ -33,9 +33,9 @@ public class BattleManager : MonoBehaviour
     #endregion
 
     #region PUBLIC_METHOD
-    public void Init(bool gameStart)
+    public void Init(bool battleStart)
     {
-        mIsBattleStart = gameStart;
+        mIsBattleStart = battleStart;
         mPlayerTurnGuage = 0.0f;
         mEnemyTurnGuage = 0.0f;
         mPlayerHand = 0;
@@ -45,16 +45,13 @@ public class BattleManager : MonoBehaviour
         mIsPlayerTurnEnd = false;
         mIsPlayerTurn = false;
         mMaxHand = 10;
-        if (gameStart)
+        if (battleStart)
         {
             mEnemy.GetComponent<Enemy>().InitByMonsterData(mGameManager.GetComponent<GameManager>().GetMonsterByIndex(Random.Range(0,2)));
             mEnemy.GetComponent<Enemy>().Init(mGameManager.GetComponent<GameManager>().floor);
             mEnemyIcon.GetComponent<Image>().sprite = 
                 mGameManager.GetComponent<GameManager>().
                 FindImageByName(mEnemy.GetComponent<Enemy>().GetIconName());
-            //mPlayerIcon.GetComponent<Image>().sprite = 
-            //    mGameManager.GetComponent<GameManager>().
-            //    FindImageByName(mPlayer.GetComponent<Player>().GetIconName());
         }
     }
 
@@ -106,6 +103,11 @@ public class BattleManager : MonoBehaviour
                 switch (cardEffect.category)
                 {
                     case CardCategory.Deal:
+                        {
+                            applyCardEffect(cardEffect.category, cardEffect.target, 
+                                cardEffect.value + mPlayer.GetComponent<Player>().GetAtk());
+                            break;
+                        }
                     case CardCategory.Heal:
                         {
                             applyCardEffect(cardEffect.category, cardEffect.target, cardEffect.value);
@@ -127,6 +129,9 @@ public class BattleManager : MonoBehaviour
     void Start()
     {
         Init(false);
+        //mPlayerIcon.GetComponent<Image>().sprite = 
+        //    mGameManager.GetComponent<GameManager>().
+        //    FindImageByName(mPlayer.GetComponent<Player>().GetIconName());
     }
 
     void Update()
@@ -136,38 +141,57 @@ public class BattleManager : MonoBehaviour
             mHPText.text = mPlayer.GetComponent<Player>().GetCurrentHP() + " / " 
                 + mPlayer.GetComponent<Player>().GetMaxHP();
             mCostText.text = mPlayer.GetComponent<Player>().GetCurrentCost() + "";
-            if (mPlayerTurnGuage >= 100.0f)
+            if (mPlayer.GetComponent<Player>().GetCurrentHP() > 0 &&
+                mEnemy.GetComponent<Enemy>().GetCurrentHP() > 0)
             {
-                mIsPlayerTurn = true;
-                // 코스트 회복
-                mPlayer.GetComponent<Player>().SetCurrentCost(mPlayer.GetComponent<Player>().GetMaxCost());
-                // 플레이어 버프/디버프 체크
-                // 카드 드로우
-                Debug.Log("현재 카드 매수 : " + mPlayerHand);
-                doCardDrow(5-mPlayerHand);
-                // 코루틴스타트
-                StartCoroutine("playerTurnCoroutine");
-                mPlayerTurnGuage = 0.0f;
+                if (mPlayerTurnGuage >= 100.0f)
+                {
+                    mIsPlayerTurn = true;
+                    // 코스트 회복
+                    mPlayer.GetComponent<Player>().SetCurrentCost(mPlayer.GetComponent<Player>().GetMaxCost());
+                    // 플레이어 버프/디버프 체크
+                    // 카드 드로우
+                    Debug.Log("현재 카드 매수 : " + mPlayerHand);
+                    doCardDrow(5 - mPlayerHand);
+                    // 코루틴스타트
+                    StartCoroutine("playerTurnCoroutine");
+                    mPlayerTurnGuage = 0.0f;
+                }
+
+                if (mEnemyTurnGuage >= 100.0f)
+                {
+                    mIsSomebodysTurn = true;
+                    StartCoroutine("enemyTurnCoroutine");
+                    mEnemyTurnGuage = 0.0f;
+                }
+
+                if (!mIsSomebodysTurn && !mIsPlayerTurn)
+                {
+                    mPlayerTurnGuage += mPlayer.GetComponent<Player>().GetSpeed() / 100.0f;
+                    Vector3 playerIconPositon = mPlayerIcon.transform.localPosition;
+                    playerIconPositon.y = mPlayerTurnGuage * -6.0f + 300.0f;
+                    mPlayerIcon.transform.localPosition = playerIconPositon;
+
+                    mEnemyTurnGuage += mEnemy.GetComponent<Enemy>().GetSpeed() / 100.0f;
+                    Vector3 enemyIconPositon = mEnemyIcon.transform.localPosition;
+                    enemyIconPositon.y = mEnemyTurnGuage * -6.0f + 300.0f;
+                    mEnemyIcon.transform.localPosition = enemyIconPositon;
+                }
             }
-
-            if (mEnemyTurnGuage >= 100.0f)
+            else
             {
-                mIsSomebodysTurn = true;
-                StartCoroutine("enemyTurnCoroutine");
-                mEnemyTurnGuage = 0.0f;
-            }
-
-            if (!mIsSomebodysTurn && !mIsPlayerTurn)
-            {
-                mPlayerTurnGuage += mPlayer.GetComponent<Player>().GetSpeed() / 100.0f;
-                Vector3 playerIconPositon = mPlayerIcon.transform.localPosition;
-                playerIconPositon.y = mPlayerTurnGuage * -6.0f + 300.0f;
-                mPlayerIcon.transform.localPosition = playerIconPositon;
-
-                mEnemyTurnGuage += mEnemy.GetComponent<Enemy>().GetSpeed() / 100.0f;
-                Vector3 enemyIconPositon = mEnemyIcon.transform.localPosition;
-                enemyIconPositon.y = mEnemyTurnGuage * -6.0f + 300.0f;
-                mEnemyIcon.transform.localPosition = enemyIconPositon;
+                mIsBattleStart = false;
+                if (mPlayer.GetComponent<Player>().GetCurrentHP() <= 0)
+                {
+                    mPlayer.GetComponent<Player>().AddEXP(mEnemy.GetComponent<Enemy>().GetEXP());
+                }
+                else if(mEnemy.GetComponent<Enemy>().GetCurrentHP() <= 0)
+                {
+                    
+                }
+                Init(false);
+                mBattleStage.SetActive(false);
+                
             }
         }
     }
@@ -194,7 +218,7 @@ public class BattleManager : MonoBehaviour
                     GameObject card = Instantiate(mCardPrefab);
                     RectTransform cardPosition = card.GetComponent<RectTransform>();
                     cardPosition.SetParent(mBattleStage.transform.Find("Hand"));
-                    cardPosition.position = mBattleStage.transform.Find("Hand").position;
+                    cardPosition.position = mBattleStage.transform.Find("Deck").position;
                     Card drawnCard = mGameManager.GetComponent<GameManager>().FindCard(drawnCardIndex);
                     string imageName = drawnCard.GetImageName();
                     card.transform.Find("CardImage").gameObject.GetComponent<Image>().sprite =
