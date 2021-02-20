@@ -219,6 +219,7 @@ public class BattleManager : MonoBehaviour
                     RectTransform cardPosition = card.GetComponent<RectTransform>();
                     cardPosition.SetParent(mBattleStage.transform.Find("Hand"));
                     cardPosition.position = mBattleStage.transform.Find("Deck").position;
+                    cardPosition.localScale = Vector3.one;
                     Card drawnCard = mGameManager.GetComponent<GameManager>().FindCard(drawnCardIndex);
                     string imageName = drawnCard.GetImageName();
                     card.transform.Find("CardImage").gameObject.GetComponent<Image>().sprite =
