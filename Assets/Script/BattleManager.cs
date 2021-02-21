@@ -6,16 +6,25 @@ using GenericScript;
 
 public class BattleManager : MonoBehaviour
 {
-    #region PUBLIC
-    public GameObject mCardPrefab;
-    public GameObject mBattleStage;
-    public GameObject mGameManager;
-    public GameObject mPlayer;
-    public GameObject mPlayerIcon;
-    public GameObject mEnemyIcon;
-    public GameObject mEnemy;
-    public Text mHPText;
-    public Text mCostText;
+    #region SERIALIZE_FIELD
+    [SerializeField]
+    GameObject mCardPrefab;
+    [SerializeField]
+    GameObject mBattleStage;
+    [SerializeField]
+    GameObject mGameManager;
+    [SerializeField]
+    GameObject mPlayer;
+    [SerializeField]
+    GameObject mPlayerIcon;
+    [SerializeField]
+    GameObject mEnemyIcon;
+    [SerializeField]
+    GameObject mEnemy;
+    [SerializeField]
+    Text mHPText;
+    [SerializeField]
+    Text mCostText;
 
     #endregion
 
@@ -47,7 +56,8 @@ public class BattleManager : MonoBehaviour
         mMaxHand = 10;
         if (battleStart)
         {
-            mEnemy.GetComponent<Enemy>().InitByMonsterData(mGameManager.GetComponent<GameManager>().GetMonsterByIndex(Random.Range(0,2)));
+            mEnemy.GetComponent<Enemy>().InitByMonsterData(
+                mGameManager.GetComponent<GameManager>().GetMonsterByIndex(Random.Range(0, 2)));
             mEnemy.GetComponent<Enemy>().Init(mGameManager.GetComponent<GameManager>().floor);
             mEnemyIcon.GetComponent<Image>().sprite = 
                 mGameManager.GetComponent<GameManager>().
@@ -102,15 +112,15 @@ public class BattleManager : MonoBehaviour
             {
                 switch (cardEffect.category)
                 {
-                    case CardCategory.Deal:
+                    case Category.Deal:
                         {
-                            applyCardEffect(cardEffect.category, cardEffect.target, 
+                            applyEffect(cardEffect.category, cardEffect.target, 
                                 cardEffect.value + mPlayer.GetComponent<Player>().GetAtk());
                             break;
                         }
-                    case CardCategory.Heal:
+                    case Category.Heal:
                         {
-                            applyCardEffect(cardEffect.category, cardEffect.target, cardEffect.value);
+                            applyEffect(cardEffect.category, cardEffect.target, cardEffect.value);
                             break;
                         }
                 }
@@ -240,24 +250,47 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    void applyCardEffect(CardCategory category, CardTarget target, int value)
+    void applyEffect(Category category, Target target, int value)
     {
         switch (target)
         {
-            case CardTarget.Own:
+            case Target.Own:
                 {
-                    mPlayer.GetComponent<Player>().ApplyCardEffect(category, value);
+                    mPlayer.GetComponent<Player>().ApplyEffect(category, value);
                     break;
                 }
-            case CardTarget.Both:
+            case Target.Both:
                 {
-                    mPlayer.GetComponent<Player>().ApplyCardEffect(category, value);
-                    mEnemy.GetComponent<Enemy>().ApplyCardEffect(category, value);
+                    mPlayer.GetComponent<Player>().ApplyEffect(category, value);
+                    mEnemy.GetComponent<Enemy>().ApplyEffect(category, value);
                     break;
                 }
-            case CardTarget.Enemy:
+            case Target.Enemy:
                 {
-                    mEnemy.GetComponent<Enemy>().ApplyCardEffect(category, value);
+                    mEnemy.GetComponent<Enemy>().ApplyEffect(category, value);
+                    break;
+                }
+        }
+    }
+
+    void applyEffect(Category category, Target target, int value, bool isSkill)
+    {
+        switch (target)
+        {
+            case Target.Own:
+                {
+                    mEnemy.GetComponent<Enemy>().ApplyEffect(category, value);
+                    break;
+                }
+            case Target.Both:
+                {
+                    mPlayer.GetComponent<Player>().ApplyEffect(category, value);
+                    mEnemy.GetComponent<Enemy>().ApplyEffect(category, value);
+                    break;
+                }
+            case Target.Enemy:
+                {
+                    mPlayer.GetComponent<Player>().ApplyEffect(category, value);
                     break;
                 }
         }
@@ -280,6 +313,19 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator enemyTurnCoroutine()
     {
+        mIsSomebodysTurn = true;
+        Enemy enemy = mEnemy.GetComponent<Enemy>();
+        int skillIndex = enemy.GetReadySkill();
+        Skill skill = mGameManager.GetComponent<GameManager>().GetSkillByIndex(skillIndex);
+
+        print(skill.Display());
+        foreach (SkillEffect effect in skill.GetEffects())
+        {
+            applyEffect(effect.category, effect.target, effect.value + enemy.GetATK(), true);
+        }
+
+        enemy.SetSkillCooltimeMax(skillIndex);
+        enemy.ReduceAllSkillCooltime(1);
         mIsSomebodysTurn = false;
         yield return null;
     }

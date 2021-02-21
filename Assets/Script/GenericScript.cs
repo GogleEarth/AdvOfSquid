@@ -60,14 +60,14 @@ namespace GenericScript
         }
 
     }
-    public enum CardTarget
+    public enum Target
     {
         Own,
         Enemy,
         Both
     }
 
-    public enum CardCategory
+    public enum Category
     {
         Deal,
         Heal,
@@ -81,15 +81,15 @@ namespace GenericScript
 
     public class CardEffect
     {
-        CardTarget Target;
-        public CardTarget target 
+        Target Target;
+        public Target target 
         {
             get { return Target; }
             set { Target = value; }
         }
 
-        CardCategory Category; 
-        public CardCategory category
+        Category Category; 
+        public Category category
         {
             get { return Category; }
             set { Category = value; }
@@ -104,7 +104,7 @@ namespace GenericScript
 
         public CardEffect() { }
 
-        public CardEffect(CardTarget t, CardCategory c, int v)
+        public CardEffect(Target t, Category c, int v)
         {
             Target = t;
             Category = c;
@@ -208,35 +208,17 @@ namespace GenericScript
         }
     }
 
-    public enum SkillTarget
-    {
-        Own,
-        Enemy,
-        Both
-    }
-
-    public enum SkillCategory
-    {
-        Deal,
-        Heal,
-        Shield,
-        Poison,
-        Bleeding,
-        Freezing,
-        Sleep
-    }
-
     public class SkillEffect
     {
-        SkillTarget Target;
-        public SkillTarget target
+        Target Target;
+        public Target target
         {
             get { return Target; }
             set { Target = value; }
         }
 
-        SkillCategory Category;
-        public SkillCategory category
+        Category Category;
+        public Category category
         {
             get { return Category; }
             set { Category = value; }
@@ -251,7 +233,7 @@ namespace GenericScript
 
         public SkillEffect() { }
 
-        public SkillEffect(SkillTarget t, SkillCategory c, int v)
+        public SkillEffect(Target t, Category c, int v)
         {
             Target = t;
             Category = c;
@@ -293,6 +275,16 @@ namespace GenericScript
             }
 
             return ret_data;
+        }
+
+        public int GetCooltime()
+        {
+            return mCooltime;
+        }
+
+        public List<SkillEffect> GetEffects()
+        {
+            return mSkillEffects;
         }
     }
 

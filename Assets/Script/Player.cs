@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
         mMaxCost = 5;
         mCurrentCost = mMaxCost;
         ATK = 1;
-        DEF = 1;
+        DEF = 0;
         SPD = 30.0f;
     }
 
@@ -127,18 +127,18 @@ public class Player : MonoBehaviour
         Debug.Log(log);
     }
 
-    public void ApplyCardEffect(CardCategory category, int value)
+    public void ApplyEffect(Category category, int value)
     {
         switch (category)
         {
-            case CardCategory.Deal:
+            case Category.Deal:
                 {
                     int deal = value - DEF;
                     if (deal > 0)
                         mCurrentHP -= deal;
                     break;
                 }
-            case CardCategory.Heal:
+            case Category.Heal:
                 {
                     if (mCurrentHP < mMaxHP)
                     {

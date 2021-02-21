@@ -104,8 +104,8 @@ public class GameManager : MonoBehaviour
             {
                 string input_text = streamReader.ReadLine();
                 List<CardEffect> cardEffects = new List<CardEffect>();
-                List<CardTarget> cardTargets = new List<CardTarget>();
-                List<CardCategory> cardCategorys = new List<CardCategory>();
+                List<Target> cardTargets = new List<Target>();
+                List<Category> cardCategorys = new List<Category>();
                 List<int> cardValues = new List<int>();
 
                 if (input_text == "Info")
@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
                         data = streamReader.ReadLine();
                         while (data != "Category")
                         {
-                            cardTargets.Add(GetEnumFromString<CardTarget>(data));
+                            cardTargets.Add(GetEnumFromString<Target>(data));
                             data = streamReader.ReadLine();
                         }
                     }
@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour
                         data = streamReader.ReadLine();
                         while (data != "Value")
                         {
-                            cardCategorys.Add(GetEnumFromString<CardCategory>(data));
+                            cardCategorys.Add(GetEnumFromString<Category>(data));
                             data = streamReader.ReadLine();
                         }
                     }
@@ -301,8 +301,8 @@ public class GameManager : MonoBehaviour
             {
                 string input_text = streamReader.ReadLine();
                 List<SkillEffect> skillEffects = new List<SkillEffect>();
-                List<SkillTarget> skillTargets = new List<SkillTarget>();
-                List<SkillCategory> skillCategorys = new List<SkillCategory>();
+                List<Target> skillTargets = new List<Target>();
+                List<Category> skillCategorys = new List<Category>();
                 List<int> skillValues = new List<int>();
 
                 if (input_text == "Info")
@@ -318,7 +318,7 @@ public class GameManager : MonoBehaviour
                         data = streamReader.ReadLine();
                         while (data != "Category")
                         {
-                            skillTargets.Add(GetEnumFromString<SkillTarget>(data));
+                            skillTargets.Add(GetEnumFromString<Target>(data));
                             data = streamReader.ReadLine();
                         }
                     }
@@ -328,7 +328,7 @@ public class GameManager : MonoBehaviour
                         data = streamReader.ReadLine();
                         while (data != "Value")
                         {
-                            skillCategorys.Add(GetEnumFromString<SkillCategory>(data));
+                            skillCategorys.Add(GetEnumFromString<Category>(data));
                             data = streamReader.ReadLine();
                         }
                     }
@@ -426,8 +426,18 @@ public class GameManager : MonoBehaviour
     {
         if (index <= mMonsters.Count)
             return mMonsters[index];
-        else
-            return mMonsters[0];
+        return mMonsters[0];
+    }
+
+    public Skill GetSkillByIndex(int index)
+    {
+        if (index <= mSkills.Count)
+        {
+            mSkills[index].Display();
+            return mSkills[index];
+        }
+
+        return mSkills[0];
     }
 
     #endregion

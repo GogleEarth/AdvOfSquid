@@ -5,6 +5,13 @@ using GenericScript;
 
 public class Enemy : MonoBehaviour
 {
+    #region SERIALRIZE_FIELD
+
+    [SerializeField]
+    GameObject GameManager;
+
+    #endregion
+
     #region PUBLIC
 
     #endregion
@@ -20,8 +27,8 @@ public class Enemy : MonoBehaviour
     float mSPD;
     string mSpriteName;
     string mIconName;
-    List<int> mSkills;
-
+    List<Skill> mSkills;
+    List<int> mSkillCooltime;
     #endregion
 
 
@@ -47,9 +54,9 @@ public class Enemy : MonoBehaviour
         mDEF = monster.GetDEF();
         mMaxHP = monster.GetHP();
         mSPD = monster.GetSPD();
-        mSkills = monster.GetSkills();
         mSpriteName = monster.GetSpriteName();
         mIconName = monster.GetIconName();
+        initSkill(monster.GetSkills());
     }
 
     public float GetSpeed()
@@ -77,24 +84,56 @@ public class Enemy : MonoBehaviour
         return mEXP;
     }
 
-    public void ApplyCardEffect(CardCategory category, int value)
+    public int GetReadySkill()
+    {
+        for (int i = mSkillCooltime.Count-1; i > 0; i--)
+        {
+            if (mSkillCooltime[i] <= 0)
+            {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    public void ApplyEffect(Category category, int value)
     {
         switch (category)
         {
-            case CardCategory.Deal:
+            case Category.Deal:
                 {
                     int deal = value - mDEF;
                     if (deal > 0)
                         mCurrentHP -= deal;
                     break;
                 }
-            case CardCategory.Heal:
+            case Category.Heal:
                 {
                     mCurrentHP += value;
                     break;
                 }
         }
         Debug.Log("enemy hp : " + mCurrentHP);
+    }
+
+    public void ReduceAllSkillCooltime(int reduction)
+    {
+        for (int i = 0; i < mSkillCooltime.Count; i++)
+        {
+            if(mSkillCooltime[i] > 0)
+                mSkillCooltime[i] -= reduction;
+        }
+    }
+
+    public void SetSkillCooltimeMax(int skillIndex)
+    {
+        mSkillCooltime[skillIndex] = mSkills[skillIndex].GetCooltime() + 1; 
+    }
+
+    public int GetATK()
+    {
+        return mATK;
     }
 
     #endregion
@@ -104,13 +143,24 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        mSkills = new List<Skill>();
+        mSkillCooltime = new List<int>();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    void initSkill(List<int> skillIndex)
+    {
+        foreach (int index in skillIndex)
+        {
+            Skill skill = GameManager.GetComponent<GameManager>().GetSkillByIndex(index);
+            mSkills.Add(skill);
+            mSkillCooltime.Add(skill.GetCooltime());
+        }
     }
 
     #endregion
