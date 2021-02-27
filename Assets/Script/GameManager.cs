@@ -152,11 +152,6 @@ public class GameManager : MonoBehaviour
                     CardList.Add(new Card(card_name, image_name, flavor_text, effect_text, int.Parse(cost), cardEffects));
                 }
             }
-
-            foreach (Card card in CardList)
-            {
-                Debug.Log(card.Display());
-            }
         }
         else
         {
@@ -276,11 +271,6 @@ public class GameManager : MonoBehaviour
                     mMonsters.Add(new Monster(monstername, imagename, iconname, exp, lv, atk, def, hp, spd, skills));
                 }
             }
-
-            foreach (Monster monster in mMonsters)
-            {
-                Debug.Log(monster.Display());
-            }
         }
         else
         {
@@ -350,11 +340,6 @@ public class GameManager : MonoBehaviour
 
                     mSkills.Add(new Skill(skillName, skillIconName, skillText, skillEffects, cooltime));
                 }
-            }
-
-            foreach (Skill skill in mSkills)
-            {
-                Debug.Log(skill.Display());
             }
         }
         else

@@ -117,14 +117,6 @@ public class Player : MonoBehaviour
             deck[i] = deck[index];
             deck[index] = temp;
         }
-
-        string log = "";
-
-        foreach (int card in deck)
-        {
-            log += card + "\n";
-        }
-        Debug.Log(log);
     }
 
     public void ApplyEffect(Category category, int value)
@@ -146,8 +138,6 @@ public class Player : MonoBehaviour
                     break;
                 }
         }
-
-        Debug.Log("Player hp : " + mCurrentHP);
     }
 
     public void AddEXP(int exp)

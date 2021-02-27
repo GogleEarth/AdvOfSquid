@@ -33,8 +33,8 @@ public class CardObject : MonoBehaviour,
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left) 
-        { 
-            Debug.Log(mCardData.Display()); 
+        {
+            ;
         }
     }
 

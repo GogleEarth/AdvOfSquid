@@ -47,7 +47,6 @@ public class Enemy : MonoBehaviour
 
     public void InitByMonsterData(Monster monster)
     {
-        Debug.Log(monster.Display());
         mEXP = monster.GetEXP();
         mLV = monster.GetLV();
         mATK = monster.GetATK();
@@ -126,7 +125,6 @@ public class Enemy : MonoBehaviour
                     break;
                 }
         }
-        Debug.Log("enemy hp : " + mCurrentHP);
     }
 
     public void ReduceAllSkillCooltime(int reduction)
@@ -141,6 +139,11 @@ public class Enemy : MonoBehaviour
     public void SetSkillCooltimeMax(int skillIndex)
     {
         mSkillCooltime[skillIndex] = mSkills[skillIndex].GetCooltime() + 1; 
+    }
+
+    public List<int> GetSkillCooltime()
+    {
+        return mSkillCooltime;
     }
 
     public int GetATK()

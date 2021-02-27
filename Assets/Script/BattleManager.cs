@@ -80,6 +80,19 @@ public class BattleManager : MonoBehaviour
                 skillIcon.GetComponent<Image>().sprite =
                     mGameManager.GetComponent<GameManager>().FindImageByName(imageName);
                 skillIcon.name = skill.GetSkillName();
+                int cooltime = skill.GetCooltime();
+                if (cooltime > 0)
+                {
+                    skillIcon.transform.Find("Cooltime").
+                        transform.Find("CooltimeText").
+                        GetComponent<Text>().text = "" + cooltime;
+                }
+                else
+                {
+                    skillIcon.transform.Find("Cooltime").
+                        transform.Find("CooltimeText").
+                        GetComponent<Text>().text = "";
+                }
             }
         }
     }
@@ -105,15 +118,11 @@ public class BattleManager : MonoBehaviour
     public void BeginCardDrag()
     {
         mPlayerHand--;
-        Debug.Log("현재 카드 매수 : " + mPlayerHand);
-
     }
 
     public void EndCardDrag()
     {
         mPlayerHand++;
-        Debug.Log("현재 카드 매수 : " + mPlayerHand);
-
     }
 
     public bool IsPlayerTurn()
@@ -183,7 +192,6 @@ public class BattleManager : MonoBehaviour
                     mPlayer.GetComponent<Player>().SetCurrentCost(mPlayer.GetComponent<Player>().GetMaxCost());
                     // 플레이어 버프/디버프 체크
                     // 카드 드로우
-                    Debug.Log("현재 카드 매수 : " + mPlayerHand);
                     doCardDrow(5 - mPlayerHand);
                     // 코루틴스타트
                     StartCoroutine("playerTurnCoroutine");
@@ -230,12 +238,10 @@ public class BattleManager : MonoBehaviour
 
     void doCardDrow(int numberOfCard)
     {
-        Debug.Log("드로우 매수 : " + numberOfCard);
         if (numberOfCard > 0)
         {
             for (int i = 0; i < numberOfCard; i++)
             {
-                Debug.Log("draw card : " + mCurrnetCardIndex);
                 if (mPlayerHand < mMaxHand)
                 {
                     int drawnCardIndex = mPlayer.GetComponent<Player>().DrawCard(mCurrnetCardIndex++);
@@ -348,6 +354,16 @@ public class BattleManager : MonoBehaviour
 
         enemy.SetSkillCooltimeMax(skillIndex);
         enemy.ReduceAllSkillCooltime(1);
+
+        List<int> cooltimes = mEnemy.GetComponent<Enemy>().GetSkillCooltime();
+        for (int i = 0; i < mEnemySKillPanel.transform.childCount; i++)
+        {
+
+            mEnemySKillPanel.transform.GetChild(i).transform.Find("Cooltime").
+                        transform.Find("CooltimeText").
+                        GetComponent<Text>().text = "" + cooltimes[i];
+        }
+
         mIsSomebodysTurn = false;
         yield return null;
     }
