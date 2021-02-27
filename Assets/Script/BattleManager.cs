@@ -10,6 +10,8 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     GameObject mCardPrefab;
     [SerializeField]
+    GameObject mSkillPrefab;
+    [SerializeField]
     GameObject mBattleStage;
     [SerializeField]
     GameObject mGameManager;
@@ -25,6 +27,10 @@ public class BattleManager : MonoBehaviour
     Text mHPText;
     [SerializeField]
     Text mCostText;
+    [SerializeField]
+    Text mEnemyHPText;
+    [SerializeField]
+    GameObject mEnemySKillPanel;
 
     #endregion
 
@@ -62,6 +68,19 @@ public class BattleManager : MonoBehaviour
             mEnemyIcon.GetComponent<Image>().sprite = 
                 mGameManager.GetComponent<GameManager>().
                 FindImageByName(mEnemy.GetComponent<Enemy>().GetIconName());
+            List<Skill> skills = mEnemy.GetComponent<Enemy>().GetSkills();
+            foreach (var skill in skills)
+            {
+                GameObject skillIcon = Instantiate(mSkillPrefab);
+                RectTransform skillPosition = skillIcon.GetComponent<RectTransform>();
+                skillPosition.SetParent(mEnemySKillPanel.transform);
+                skillPosition.position = Vector3.zero;
+                skillPosition.localScale = Vector3.one;
+                string imageName = skill.GetSkillIcon();
+                skillIcon.GetComponent<Image>().sprite =
+                    mGameManager.GetComponent<GameManager>().FindImageByName(imageName);
+                skillIcon.name = skill.GetSkillName();
+            }
         }
     }
 
@@ -151,6 +170,9 @@ public class BattleManager : MonoBehaviour
             mHPText.text = mPlayer.GetComponent<Player>().GetCurrentHP() + " / " 
                 + mPlayer.GetComponent<Player>().GetMaxHP();
             mCostText.text = mPlayer.GetComponent<Player>().GetCurrentCost() + "";
+            mEnemyHPText.text = mEnemy.GetComponent<Enemy>().GetCurrentHP() + " / "
+                + mEnemy.GetComponent<Enemy>().GetMaxHP();
+
             if (mPlayer.GetComponent<Player>().GetCurrentHP() > 0 &&
                 mEnemy.GetComponent<Enemy>().GetCurrentHP() > 0)
             {

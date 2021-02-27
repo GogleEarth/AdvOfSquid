@@ -286,6 +286,16 @@ namespace GenericScript
         {
             return mSkillEffects;
         }
+
+        public string GetSkillIcon()
+        {
+            return mSkillIconName;
+        }
+
+        public string GetSkillName()
+        {
+            return mSkillName;
+        }
     }
 
     public class Monster

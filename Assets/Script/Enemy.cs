@@ -79,6 +79,11 @@ public class Enemy : MonoBehaviour
         return mCurrentHP;
     }
 
+    public int GetMaxHP()
+    {
+        return mMaxHP;
+    }
+
     public int GetEXP()
     {
         return mEXP;
@@ -97,6 +102,11 @@ public class Enemy : MonoBehaviour
         return 0;
     }
 
+    public List<Skill> GetSkills()
+    {
+        return mSkills;
+    }
+
     public void ApplyEffect(Category category, int value)
     {
         switch (category)
@@ -111,6 +121,8 @@ public class Enemy : MonoBehaviour
             case Category.Heal:
                 {
                     mCurrentHP += value;
+                    if (mCurrentHP > mMaxHP)
+                        mCurrentHP = mMaxHP;
                     break;
                 }
         }

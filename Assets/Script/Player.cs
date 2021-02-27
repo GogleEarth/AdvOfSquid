@@ -140,10 +140,9 @@ public class Player : MonoBehaviour
                 }
             case Category.Heal:
                 {
-                    if (mCurrentHP < mMaxHP)
-                    {
-                        mCurrentHP += value;
-                    }
+                    mCurrentHP += value;
+                    if (mCurrentHP > mMaxHP)
+                        mCurrentHP = mMaxHP;
                     break;
                 }
         }
