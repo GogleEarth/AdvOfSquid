@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class LobbyUIManager : MonoBehaviour
 {
     #region PUBLIC
+
     public GameManager game_manager;
     public GameObject mBattleManager;
     public Image fade_image;
@@ -33,23 +34,29 @@ public class LobbyUIManager : MonoBehaviour
 
     }
 
-    IEnumerator FadeOut()
+    IEnumerator FadeOut
     {
-        for (float i = 0f; i <= 1; i += fade_speed * Time.deltaTime)
+        get
         {
-            Color color = new Vector4(0.0f, 0.0f, 0.0f, i);
-            fade_image.color = color;
-            yield return 0;
+            for (float i = 0f; i <= 1; i += fade_speed * Time.deltaTime)
+            {
+                Color color = new Vector4(0.0f, 0.0f, 0.0f, i);
+                fade_image.color = color;
+                yield return 0;
+            }
         }
     }
 
-    IEnumerator FadeIn()
+    IEnumerator FadeIn
     {
-        for (float i = 1f; i >= 0; i -= fade_speed * Time.deltaTime)
+        get
         {
-            Color color = new Vector4(0.0f, 0.0f, 0.0f, i);
-            fade_image.color = color;
-            yield return 0;
+            for (float i = 1f; i >= 0; i -= fade_speed * Time.deltaTime)
+            {
+                Color color = new Vector4(0.0f, 0.0f, 0.0f, i);
+                fade_image.color = color;
+                yield return 0;
+            }
         }
     }
 
@@ -68,7 +75,7 @@ public class LobbyUIManager : MonoBehaviour
             void_stage.gameObject.SetActive(false);
     }
 
-    public void turnEnd()
+    public void TurnEnd()
     {
         mBattleManager.GetComponent<BattleManager>().DoEndTurn();
     }

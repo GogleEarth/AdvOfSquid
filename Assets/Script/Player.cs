@@ -72,35 +72,17 @@ public class Player : MonoBehaviour
         else return -1;
     }
 
-    public float GetSpeed()
-    {
-        return SPD;
-    }
+    public float Speed => SPD;
 
-    public int GetAtk()
-    {
-        return ATK;
-    }
+    public int Atk => ATK;
 
-    public int GetCurrentHP()
-    {
-        return mCurrentHP;
-    }
+    public int CurrentHP => mCurrentHP;
 
-    public int GetMaxHP()
-    {
-        return mMaxHP;
-    }
+    public int MaxHP => mMaxHP;
 
-    public int GetCurrentCost()
-    {
-        return mCurrentCost;
-    }
+    public int CurrentCost => mCurrentCost;
 
-    public int GetMaxCost()
-    {
-        return mMaxCost;
-    }
+    public int MaxCost => mMaxCost;
 
     public void SetCurrentCost(int cost)
     {

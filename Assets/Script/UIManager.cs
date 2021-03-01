@@ -8,8 +8,10 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public Image fade_image;
-    public float fade_speed;
+    [SerializeField]
+    Image fade_image;
+    [SerializeField]
+    float fade_speed;
 
     bool fadeout;
     bool gamestart;

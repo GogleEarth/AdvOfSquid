@@ -54,10 +54,7 @@ namespace GenericScript
             Value = v;
         }
 
-        public string Display()
-        {
-            return Target + " " + Category + " " + Value + "\n";
-        }
+        public string Display => Target + " " + Category + " " + Value + "\n";
 
     }
     public enum Target
@@ -111,10 +108,7 @@ namespace GenericScript
             Value = v;
         }
 
-        public string Display()
-        {
-            return Target + " " + Category + " " + Value + "\n";
-        }
+        public string Display => Target + " " + Category + " " + Value + "\n";
 
     }
 
@@ -136,17 +130,20 @@ namespace GenericScript
             effects = eff;
         }
 
-        public string Display()
+        public string Display
         {
-            string ret_data = artifact_name + "\n" + image_name + "\n" + flavor_text + "\n" + effect_text
-                + "\n";
-
-            foreach (ArtifactEffect effect in effects)
+            get
             {
-                ret_data += effect.Display();
-            }
+                string ret_data = artifact_name + "\n" + image_name + "\n" + flavor_text + "\n" + effect_text
+                    + "\n";
 
-            return ret_data;
+                foreach (ArtifactEffect effect in effects)
+                {
+                    ret_data += effect.Display;
+                }
+
+                return ret_data;
+            }
         }
     }
 
@@ -169,43 +166,31 @@ namespace GenericScript
             effects = eff;
         }
 
-        public string Display()
+        public string Display
         {
-            string ret_data = card_name + "\n" + image_name + "\n" + flavor_text + "\n" + effect_text
-                + "\n";
-
-            foreach (CardEffect effect in effects)
+            get
             {
-                 ret_data += effect.Display();
+                string ret_data = card_name + "\n" + image_name + "\n" + flavor_text + "\n" + effect_text
+                    + "\n";
+
+                foreach (CardEffect effect in effects)
+                {
+                    ret_data += effect.Display;
+                }
+
+                return ret_data;
             }
-            
-            return ret_data;
         }
 
-        public string GetImageName()
-        {
-            return image_name;
-        }
+        public string ImageName => image_name;
 
-        public string GetEffectText()
-        {
-            return effect_text;
-        }
+        public string EffectText => effect_text;
 
-        public string GetCardName()
-        {
-            return card_name;
-        }
+        public string CardName => card_name;
 
-        public List<CardEffect> GetCardEffects()
-        {
-            return effects;
-        }
+        public List<CardEffect> CardEffects => effects;
 
-        public int GetCost()
-        {
-            return mCost;
-        }
+        public int Cost => mCost;
     }
 
     public class SkillEffect
@@ -240,10 +225,7 @@ namespace GenericScript
             Value = v;
         }
 
-        public string Display()
-        {
-            return Target + "\n" + Category + "\n" + Value + "\n";
-        }
+        public string Display => Target + "\n" + Category + "\n" + Value + "\n";
 
     }
 
@@ -265,37 +247,28 @@ namespace GenericScript
             mCooltime = cooltime;
         }
 
-        public string Display()
+        public string Display
         {
-            string ret_data = mSkillName + "\n" + mSkillIconName + "\n" + mSkillText + "\n" + mCooltime + "\n";
-
-            foreach (SkillEffect effect in mSkillEffects)
+            get
             {
-                ret_data += effect.Display();
+                string ret_data = mSkillName + "\n" + mSkillIconName + "\n" + mSkillText + "\n" + mCooltime + "\n";
+
+                foreach (SkillEffect effect in mSkillEffects)
+                {
+                    ret_data += effect.Display;
+                }
+
+                return ret_data;
             }
-
-            return ret_data;
         }
 
-        public int GetCooltime()
-        {
-            return mCooltime;
-        }
+        public int Cooltime => mCooltime;
 
-        public List<SkillEffect> GetEffects()
-        {
-            return mSkillEffects;
-        }
+        public List<SkillEffect> Effects => mSkillEffects;
 
-        public string GetSkillIcon()
-        {
-            return mSkillIconName;
-        }
+        public string SkillIcon => mSkillIconName;
 
-        public string GetSkillName()
-        {
-            return mSkillName;
-        }
+        public string SkillName => mSkillName;
     }
 
     public class Monster
@@ -327,62 +300,38 @@ namespace GenericScript
             mSkills = skills;
         }
 
-        public string Display()
+        public string Display
         {
-            string ret_data = mMonsterName + "\n" + mSpriteName + "\n" + mIconName + "\n";
-
-            foreach (int skill in mSkills)
+            get
             {
-                ret_data += skill + " ,";
+                string ret_data = mMonsterName + "\n" + mSpriteName + "\n" + mIconName + "\n";
+
+                foreach (int skill in mSkills)
+                {
+                    ret_data += skill + " ,";
+                }
+
+                return ret_data;
             }
-
-            return ret_data;
         }
 
-        public int GetEXP()
-        {
-            return mEXP;
-        }
+        public int EXP => mEXP;
 
-        public int GetLV()
-        {
-            return mLV;
-        }
+        public int LV => mLV;
 
-        public int GetATK()
-        {
-            return mATK;
-        }
+        public int ATK => mATK;
 
-        public int GetDEF()
-        {
-            return mDEF;
-        }
+        public int DEF => mDEF;
 
-        public int GetHP()
-        {
-            return mHP;
-        }
+        public int HP => mHP;
 
-        public float GetSPD()
-        {
-            return mSPD;
-        }
+        public float SPD => mSPD;
 
-        public List<int> GetSkills()
-        {
-            return mSkills;
-        }
+        public List<int> Skills => mSkills;
 
-        public string GetSpriteName()
-        {
-            return mSpriteName;
-        }
+        public string SpriteName => mSpriteName;
 
-        public string GetIconName()
-        {
-            return mIconName;
-        }
+        public string IconName => mIconName;
 
     }
 

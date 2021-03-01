@@ -24,7 +24,7 @@ public class StageObject : MonoBehaviour
         if (target != null && target == this.gameObject && stage == gamemanager.GetComponent<GameManager>().stage)
         {
             if (!gamemanager.GetComponent<GameManager>().mBattleManger.
-                GetComponent<BattleManager>().IsBattleStart())
+                GetComponent<BattleManager>().IsBattleStart)
             {
                 gamemanager.GetComponent<GameManager>().selected_stage = target;
             }
@@ -44,8 +44,6 @@ public class StageObject : MonoBehaviour
             }
         }
     }
-
-
 
     void CastRay() // 유닛 히트처리 부분.  레이를 쏴서 처리합니다. 
     {

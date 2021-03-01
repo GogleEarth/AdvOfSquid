@@ -69,16 +69,10 @@ public class CardObject : MonoBehaviour,
     {
         mIndexInHand = index;
     }
-    
-    public int GetIndex()
-    {
-        return mIndexInHand;
-    }
 
-    public Card GetCard()
-    {
-        return mCardData;
-    }
+    public int Index => mIndexInHand;
+
+    public Card Card => mCardData;
 
     #endregion
 

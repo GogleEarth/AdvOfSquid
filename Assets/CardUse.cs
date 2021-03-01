@@ -24,12 +24,12 @@ public class CardUse : MonoBehaviour, IDropHandler
     {
         if (mSelectedCard != null)
         {
-            if (mBattleManager.GetComponent<BattleManager>().GetCurrnetCost()
-                >= mSelectedCard.GetComponent<CardObject>().GetCard().GetCost() &&
-                mBattleManager.GetComponent<BattleManager>().IsPlayerTurn())
+            if (mBattleManager.GetComponent<BattleManager>().CurrentCost
+                >= mSelectedCard.GetComponent<CardObject>().Card.Cost &&
+                mBattleManager.GetComponent<BattleManager>().IsPlayerTurn)
             {
                 mBattleManager.GetComponent<BattleManager>().
-                    UseCard(mSelectedCard.GetComponent<CardObject>().GetCard());
+                    UseCard(mSelectedCard.GetComponent<CardObject>().Card);
                 Destroy(mSelectedCard);
                 mSelectedCard = null;
             }

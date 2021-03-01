@@ -8,7 +8,6 @@ using System.IO;
 
 public class GameManager : MonoBehaviour
 {
-    bool game_start;
     public bool game_init = false;
     public int stage = 0;
     public int floor = 0;
@@ -20,12 +19,15 @@ public class GameManager : MonoBehaviour
     public Image shop_stage;
     public Image void_stage;
     public GameObject mBattleManger;
-
+    
+    bool game_start;
     List<Card> CardList;
     List<Artifact> ArtifactList;
     List<Monster> mMonsters;
     List<Skill> mSkills;
     Sprite[] mSprites;
+
+    #region PRIVATE_METHOD
 
     void Start()
     {
@@ -43,10 +45,10 @@ public class GameManager : MonoBehaviour
             Debug.Log(item.texture.name);
         }
 
-        loadCardData();
+        LoadCardData();
         //loadArtiData();
-        loadSkillData();
-        loadMonsterData();
+        LoadSkillData();
+        LoadMonsterData();
         InitPlayerDeck();
 
         game_init = true;
@@ -93,7 +95,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void loadCardData()
+    void LoadCardData()
     {
         FileStream file = new FileStream("Assets/Resources/cardtest.txt", FileMode.Open);
         StreamReader streamReader = new StreamReader(file);
@@ -161,7 +163,7 @@ public class GameManager : MonoBehaviour
         file.Close();
     }
 
-    void loadArtiData()
+    void LoadArtiData()
     {
         FileStream file = new FileStream("Assets/Resources/artitest.txt", FileMode.Open);
         StreamReader streamReader = new StreamReader(file);
@@ -222,7 +224,7 @@ public class GameManager : MonoBehaviour
 
             foreach (Artifact arti in ArtifactList)
             {
-                Debug.Log(arti.Display());
+                Debug.Log(arti.Display);
             }
         }
         else
@@ -233,7 +235,7 @@ public class GameManager : MonoBehaviour
         file.Close();
     }
 
-    void loadMonsterData()
+    void LoadMonsterData()
     {
         FileStream file = new FileStream("Assets/Resources/monstertest.txt", FileMode.Open);
         StreamReader streamReader = new StreamReader(file);
@@ -280,7 +282,7 @@ public class GameManager : MonoBehaviour
         file.Close();
     }
 
-    void loadSkillData()
+    void LoadSkillData()
     {
         FileStream file = new FileStream("Assets/Resources/skilltest.txt", FileMode.Open);
         StreamReader streamReader = new StreamReader(file);
@@ -355,7 +357,10 @@ public class GameManager : MonoBehaviour
         return EnumUtil<T>.Parse(data);
     }
 
+    #endregion
+
     #region PUBLIC_METHOD
+
     public void SetGameStart(bool start)
     {
         game_start = start;
@@ -418,7 +423,7 @@ public class GameManager : MonoBehaviour
     {
         if (index <= mSkills.Count)
         {
-            mSkills[index].Display();
+            Debug.Log(mSkills[index].Display);
             return mSkills[index];
         }
 

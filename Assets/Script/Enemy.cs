@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     #region SERIALRIZE_FIELD
 
     [SerializeField]
+
     GameObject GameManager;
 
     #endregion
@@ -29,6 +30,7 @@ public class Enemy : MonoBehaviour
     string mIconName;
     List<Skill> mSkills;
     List<int> mSkillCooltime;
+
     #endregion
 
 
@@ -47,58 +49,43 @@ public class Enemy : MonoBehaviour
 
     public void InitByMonsterData(Monster monster)
     {
-        mEXP = monster.GetEXP();
-        mLV = monster.GetLV();
-        mATK = monster.GetATK();
-        mDEF = monster.GetDEF();
-        mMaxHP = monster.GetHP();
-        mSPD = monster.GetSPD();
-        mSpriteName = monster.GetSpriteName();
-        mIconName = monster.GetIconName();
-        initSkill(monster.GetSkills());
+        mEXP = monster.EXP;
+        mLV = monster.LV;
+        mATK = monster.ATK;
+        mDEF = monster.DEF;
+        mMaxHP = monster.HP;
+        mSPD = monster.SPD;
+        mSpriteName = monster.SpriteName;
+        mIconName = monster.IconName;
+        initSkill(monster.Skills);
     }
 
-    public float GetSpeed()
-    {
-        return mSPD;
-    }
+    public float Speed => mSPD;
 
-    public string GetSpriteName()
-    {
-        return mSpriteName;
-    }
+    public string SpriteName => mSpriteName;
 
-    public string GetIconName()
-    {
-        return mIconName;
-    }
+    public string IconName => mIconName;
 
-    public int GetCurrentHP()
-    {
-        return mCurrentHP;
-    }
+    public int CurrentHP => mCurrentHP;
 
-    public int GetMaxHP()
-    {
-        return mMaxHP;
-    }
+    public int MaxHP => mMaxHP;
 
-    public int GetEXP()
-    {
-        return mEXP;
-    }
+    public int EXP => mEXP;
 
-    public int GetReadySkill()
+    public int ReadySkill
     {
-        for (int i = mSkillCooltime.Count-1; i > 0; i--)
+        get
         {
-            if (mSkillCooltime[i] <= 0)
+            for (int i = mSkillCooltime.Count - 1; i > 0; i--)
             {
-                return i;
+                if (mSkillCooltime[i] <= 0)
+                {
+                    return i;
+                }
             }
-        }
 
-        return 0;
+            return 0;
+        }
     }
 
     public List<Skill> GetSkills()
@@ -138,18 +125,12 @@ public class Enemy : MonoBehaviour
 
     public void SetSkillCooltimeMax(int skillIndex)
     {
-        mSkillCooltime[skillIndex] = mSkills[skillIndex].GetCooltime() + 1; 
+        mSkillCooltime[skillIndex] = mSkills[skillIndex].Cooltime + 1; 
     }
 
-    public List<int> GetSkillCooltime()
-    {
-        return mSkillCooltime;
-    }
+    public List<int> SkillCooltime => mSkillCooltime;
 
-    public int GetATK()
-    {
-        return mATK;
-    }
+    public int ATK => mATK;
 
     #endregion
 
@@ -170,11 +151,14 @@ public class Enemy : MonoBehaviour
 
     void initSkill(List<int> skillIndex)
     {
+        mSkills.Clear();
+        mSkillCooltime.Clear();
+
         foreach (int index in skillIndex)
         {
             Skill skill = GameManager.GetComponent<GameManager>().GetSkillByIndex(index);
             mSkills.Add(skill);
-            mSkillCooltime.Add(skill.GetCooltime());
+            mSkillCooltime.Add(skill.Cooltime);
         }
     }
 

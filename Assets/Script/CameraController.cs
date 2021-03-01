@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public float camera_lag = 2f;
-    public float height = 2f;
-    public float zoom_speed = 2f;
+    [SerializeField]
+    float zoom_speed = 2f;
+
     float dist;
     Vector3 mouse_start;
 

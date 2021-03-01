@@ -32,7 +32,7 @@ public class Hand : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int currentCard = mBattleManager.GetComponent<BattleManager>().GetCurrnetHand();
+        int currentCard = mBattleManager.GetComponent<BattleManager>().CurrnetHand;
         if (transform.childCount > 0)
         {
             for (int i = 0; i < transform.childCount; ++i)
