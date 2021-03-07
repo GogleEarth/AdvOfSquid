@@ -32,6 +32,8 @@ public class BattleManager : MonoBehaviour
     Text mEnemyHPText;
     [SerializeField]
     GameObject mEnemySKillPanel;
+    [SerializeField]
+    GameObject mResultPanel;
 
     #endregion
 
@@ -206,14 +208,14 @@ public class BattleManager : MonoBehaviour
                     // 카드 드로우
                     DoCardDrow(5 - mPlayerHand);
                     // 코루틴스타트
-                    StartCoroutine("playerTurnCoroutine");
+                    StartCoroutine(PlayerTurnCoroutine);
                     mPlayerTurnGuage = 0.0f;
                 }
 
                 if (mEnemyTurnGuage >= 100.0f)
                 {
                     mIsSomebodysTurn = true;
-                    StartCoroutine("enemyTurnCoroutine");
+                    StartCoroutine(EnemyTurnCoroutine);
                     mEnemyTurnGuage = 0.0f;
                 }
 
@@ -232,18 +234,18 @@ public class BattleManager : MonoBehaviour
             }
             else
             {
-                mIsBattleStart = false;
                 if (mPlayer.GetComponent<Player>().CurrentHP <= 0)
                 {
-                    mPlayer.GetComponent<Player>().AddEXP(mEnemy.GetComponent<Enemy>().EXP);
+                    mResultPanel.GetComponent<Result>();
                 }
                 else if(mEnemy.GetComponent<Enemy>().CurrentHP <= 0)
                 {
-                    
+                    mResultPanel.SetActive(true);
+                    mPlayer.GetComponent<Player>().AddEXP(mEnemy.GetComponent<Enemy>().EXP);
+                    mIsBattleStart = false;
                 }
-                Init(false);
-                mBattleStage.SetActive(false);
-                
+
+                mIsPause = true;
             }
         }
     }

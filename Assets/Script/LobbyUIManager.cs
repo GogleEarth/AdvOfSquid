@@ -26,7 +26,7 @@ public class LobbyUIManager : MonoBehaviour
     {
         fade_image.gameObject.SetActive(true);
 
-        StartCoroutine("FadeIn");
+        StartCoroutine(FadeIn);
     }
 
     void Update()
