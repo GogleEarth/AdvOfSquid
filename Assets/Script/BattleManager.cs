@@ -152,7 +152,7 @@ public class BattleManager : MonoBehaviour
         {
             mPlayer.GetComponent<Player>().SetCurrentCost(
                 mPlayer.GetComponent<Player>().CurrentCost - card.Cost);
-            foreach (CardEffect cardEffect in card.CardEffects)
+            foreach (Effect cardEffect in card.CardEffects)
             {
                 switch (cardEffect.category)
                 {
@@ -366,7 +366,7 @@ public class BattleManager : MonoBehaviour
             Skill skill = mGameManager.GetComponent<GameManager>().GetSkillByIndex(skillIndex);
 
             print(skill.Display);
-            foreach (SkillEffect effect in skill.Effects)
+            foreach (Effect effect in skill.Effects)
             {
                 ApplyEffect(effect.category, effect.target, effect.value + enemy.ATK, true);
             }

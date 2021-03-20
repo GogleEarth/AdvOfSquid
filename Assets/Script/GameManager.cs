@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     List<Artifact> ArtifactList;
     List<Monster> mMonsters;
     List<Skill> mSkills;
+    List<Buff> mBuffList;
     Sprite[] mSprites;
 
     #region PRIVATE_METHOD
@@ -49,6 +50,7 @@ public class GameManager : MonoBehaviour
         //loadArtiData();
         LoadSkillData();
         LoadMonsterData();
+        LoadBuffData();
         InitPlayerDeck();
 
         game_init = true;
@@ -105,7 +107,7 @@ public class GameManager : MonoBehaviour
             while (!streamReader.EndOfStream)
             {
                 string input_text = streamReader.ReadLine();
-                List<CardEffect> cardEffects = new List<CardEffect>();
+                List<Effect> cardEffects = new List<Effect>();
                 List<Target> cardTargets = new List<Target>();
                 List<Category> cardCategorys = new List<Category>();
                 List<int> cardValues = new List<int>();
@@ -148,7 +150,7 @@ public class GameManager : MonoBehaviour
 
                     for (int i = 0; i < cardTargets.Count; i++)
                     {
-                        cardEffects.Add(new CardEffect(cardTargets[i], cardCategorys[i], cardValues[i]));
+                        cardEffects.Add(new Effect(cardTargets[i], cardCategorys[i], cardValues[i]));
                     }
 
                     CardList.Add(new Card(card_name, image_name, flavor_text, effect_text, int.Parse(cost), cardEffects));
@@ -174,7 +176,7 @@ public class GameManager : MonoBehaviour
             {
                 string input_text = streamReader.ReadLine();
                 List<ArtifactEffect> artiEffects = new List<ArtifactEffect>();
-                List<ArtifactTarget> artiTargets = new List<ArtifactTarget>();
+                List<Target> artiTargets = new List<Target>();
                 List<ArtifactCategory> artiCategorys = new List<ArtifactCategory>();
                 List<int> artiValues = new List<int>();
 
@@ -190,7 +192,7 @@ public class GameManager : MonoBehaviour
                         data = streamReader.ReadLine();
                         while (data != "Category")
                         {
-                            artiTargets.Add((ArtifactTarget)int.Parse(data));
+                            artiTargets.Add((Target)int.Parse(data));
                             data = streamReader.ReadLine();
                         }
                     }
@@ -292,7 +294,7 @@ public class GameManager : MonoBehaviour
             while (!streamReader.EndOfStream)
             {
                 string input_text = streamReader.ReadLine();
-                List<SkillEffect> skillEffects = new List<SkillEffect>();
+                List<Effect> skillEffects = new List<Effect>();
                 List<Target> skillTargets = new List<Target>();
                 List<Category> skillCategorys = new List<Category>();
                 List<int> skillValues = new List<int>();
@@ -337,10 +339,73 @@ public class GameManager : MonoBehaviour
 
                     for (int i = 0; i < skillTargets.Count; i++)
                     {
-                        skillEffects.Add(new SkillEffect(skillTargets[i], skillCategorys[i], skillValues[i]));
+                        skillEffects.Add(new Effect(skillTargets[i], skillCategorys[i], skillValues[i]));
                     }
 
                     mSkills.Add(new Skill(skillName, skillIconName, skillText, skillEffects, cooltime));
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("flie not found!");
+        }
+
+        file.Close();
+    }
+
+    void LoadBuffData()
+    {
+        FileStream file = new FileStream("Assets/Resources/bufftest.txt", FileMode.Open);
+        StreamReader streamReader = new StreamReader(file);
+
+        if (file.CanRead)
+        {
+            while (!streamReader.EndOfStream)
+            {
+                string input_text = streamReader.ReadLine();
+                if (input_text == "Info")
+                {
+                    string buffName = streamReader.ReadLine();
+                    string effectText = streamReader.ReadLine();
+                    string iconName = streamReader.ReadLine();
+                    string data = streamReader.ReadLine();
+                    Category buffCategory = Category.Bleeding;
+                    int buffValue = 0;
+                    int buffDuration = 0;
+
+                    if (data == "Category")
+                    {
+                        data = streamReader.ReadLine();
+                        while (data != "Value")
+                        {
+                            buffCategory = GetEnumFromString<Category>(data);
+                            data = streamReader.ReadLine();
+                        }
+                    }
+
+                    if (data == "Value")
+                    {
+                        data = streamReader.ReadLine();
+                        while (data != "Duration")
+                        {
+                            buffValue = int.Parse(data);
+                            data = streamReader.ReadLine();
+                        }
+                    }
+
+                    if (data == "Duration")
+                    {
+                        data = streamReader.ReadLine();
+                        while (data != "End")
+                        {
+                            buffDuration = int.Parse(data);
+                            data = streamReader.ReadLine();
+                        }
+                    }
+
+                    mBuffList.Add(new Buff(buffName, effectText, iconName,
+                        buffCategory, buffValue, buffDuration));
                 }
             }
         }

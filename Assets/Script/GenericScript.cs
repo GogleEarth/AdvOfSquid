@@ -14,17 +14,10 @@ namespace GenericScript
         DMG_Increase
     }
 
-    public enum ArtifactTarget
-    {
-        Own,
-        Enemy,
-        Both
-    }
-
     public class ArtifactEffect
     {
-        ArtifactTarget Target;
-        ArtifactTarget target
+        Target Target;
+        Target target
         {
             get { return Target; }
             set { Target = value; }
@@ -47,7 +40,7 @@ namespace GenericScript
 
         public ArtifactEffect() { }
 
-        public ArtifactEffect(ArtifactTarget t, ArtifactCategory c, int v)
+        public ArtifactEffect(Target t, ArtifactCategory c, int v)
         {
             Target = t;
             Category = c;
@@ -75,17 +68,16 @@ namespace GenericScript
         Sleep
     }
 
-
-    public class CardEffect
+    public class Effect
     {
         Target Target;
-        public Target target 
+        public Target target
         {
             get { return Target; }
             set { Target = value; }
         }
 
-        Category Category; 
+        Category Category;
         public Category category
         {
             get { return Category; }
@@ -95,13 +87,13 @@ namespace GenericScript
         int Value;
         public int value
         {
-            get { return Value; } 
-            set { Value = value; } 
+            get { return Value; }
+            set { Value = value; }
         }
 
-        public CardEffect() { }
+        public Effect() { }
 
-        public CardEffect(Target t, Category c, int v)
+        public Effect(Target t, Category c, int v)
         {
             Target = t;
             Category = c;
@@ -120,7 +112,7 @@ namespace GenericScript
         string effect_text;
         List<ArtifactEffect> effects;
 
-        public Artifact(string arti_name, string img_name, string flav_text, 
+        public Artifact(string arti_name, string img_name, string flav_text,
             string eff_text, List<ArtifactEffect> eff)
         {
             artifact_name = arti_name;
@@ -154,9 +146,9 @@ namespace GenericScript
         string flavor_text;
         string effect_text;
         int mCost;
-        List<CardEffect> effects;
+        List<Effect> effects;
         public Card(string ca_name, string img_name, string flav_text,
-            string eff_text, int cost,  List<CardEffect> eff)
+            string eff_text, int cost, List<Effect> eff)
         {
             card_name = ca_name;
             image_name = img_name;
@@ -173,7 +165,7 @@ namespace GenericScript
                 string ret_data = card_name + "\n" + image_name + "\n" + flavor_text + "\n" + effect_text
                     + "\n";
 
-                foreach (CardEffect effect in effects)
+                foreach (Effect effect in effects)
                 {
                     ret_data += effect.Display;
                 }
@@ -188,45 +180,9 @@ namespace GenericScript
 
         public string CardName => card_name;
 
-        public List<CardEffect> CardEffects => effects;
+        public List<Effect> CardEffects => effects;
 
         public int Cost => mCost;
-    }
-
-    public class SkillEffect
-    {
-        Target Target;
-        public Target target
-        {
-            get { return Target; }
-            set { Target = value; }
-        }
-
-        Category Category;
-        public Category category
-        {
-            get { return Category; }
-            set { Category = value; }
-        }
-
-        int Value;
-        public int value
-        {
-            get { return Value; }
-            set { Value = value; }
-        }
-
-        public SkillEffect() { }
-
-        public SkillEffect(Target t, Category c, int v)
-        {
-            Target = t;
-            Category = c;
-            Value = v;
-        }
-
-        public string Display => Target + "\n" + Category + "\n" + Value + "\n";
-
     }
 
     public class Skill
@@ -234,11 +190,11 @@ namespace GenericScript
         string mSkillName;
         string mSkillText;
         string mSkillIconName;
-        List<SkillEffect> mSkillEffects;
+        List<Effect> mSkillEffects;
         int mCooltime;
 
         public Skill(string skillname, string skilliconname, string skilltext,
-            List<SkillEffect> skilleffects, int cooltime)
+            List<Effect> skilleffects, int cooltime)
         {
             mSkillName = skillname;
             mSkillText = skilltext;
@@ -253,7 +209,7 @@ namespace GenericScript
             {
                 string ret_data = mSkillName + "\n" + mSkillIconName + "\n" + mSkillText + "\n" + mCooltime + "\n";
 
-                foreach (SkillEffect effect in mSkillEffects)
+                foreach (Effect effect in mSkillEffects)
                 {
                     ret_data += effect.Display;
                 }
@@ -264,7 +220,7 @@ namespace GenericScript
 
         public int Cooltime => mCooltime;
 
-        public List<SkillEffect> Effects => mSkillEffects;
+        public List<Effect> Effects => mSkillEffects;
 
         public string SkillIcon => mSkillIconName;
 
@@ -284,8 +240,8 @@ namespace GenericScript
         float mSPD;
         List<int> mSkills;
 
-        public Monster(string monname, string imgname, string iconname, 
-            int exp, int lv, int atk, int def, int hp, float spd, 
+        public Monster(string monname, string imgname, string iconname,
+            int exp, int lv, int atk, int def, int hp, float spd,
             List<int> skills)
         {
             mMonsterName = monname;
@@ -335,13 +291,48 @@ namespace GenericScript
 
     }
 
-    public static class EnumUtil<T> 
+    public static class EnumUtil<T>
     {
-        public static T Parse(string s) 
+        public static T Parse(string s)
         {
-            return (T)Enum.Parse(typeof(T), s); 
+            return (T)Enum.Parse(typeof(T), s);
         }
     }
 
+    public class Buff
+    {
+        string mName;
+        string mEffectText;
+        string mIconName;
+        Category mCategory;
+        int mValue;
+        int mDuration;
+
+        public Buff(string name, string effectText, string iconName,
+            Category category, int value, int duration)
+        {
+            mName = name;
+            mEffectText = effectText;
+            mIconName = iconName;
+            mCategory = category;
+            mValue = value;
+            mDuration = duration;
+        }
+
+        public string Name => mName;
+
+        public string EffectText => mEffectText;
+
+        public string IconName => mIconName;
+
+        public Category BuffCategory => mCategory;
+
+        public int Value => mValue;
+
+        public int Duration => mDuration;
+
+
+
+    }
 
 }
