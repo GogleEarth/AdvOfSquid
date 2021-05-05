@@ -30,6 +30,7 @@ public class Enemy : MonoBehaviour
     string mIconName;
     List<Skill> mSkills;
     List<int> mSkillCooltime;
+    List<GameObject> mBuffs;
 
     #endregion
 
@@ -38,8 +39,8 @@ public class Enemy : MonoBehaviour
 
     public void Init(int floor)
     {
-        mEXP += floor * 2;
         mLV += floor;
+        mEXP += floor * mLV;
         mATK += (int)(floor * 0.5f);
         mDEF += (int)(floor * 0.5f);
         mMaxHP += (int)(floor * 2.5f);
@@ -109,6 +110,13 @@ public class Enemy : MonoBehaviour
                     mCurrentHP += value;
                     if (mCurrentHP > mMaxHP)
                         mCurrentHP = mMaxHP;
+                    break;
+                }
+            case Category.Bleeding:
+                {
+                    GameObject buff = Instantiate(mBuffPrefab);
+                    mBuffs.Add(buff);
+                    // 버프의 델리케이드 추가
                     break;
                 }
         }

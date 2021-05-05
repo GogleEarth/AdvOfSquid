@@ -367,8 +367,8 @@ public class GameManager : MonoBehaviour
                 if (input_text == "Info")
                 {
                     string buffName = streamReader.ReadLine();
-                    string effectText = streamReader.ReadLine();
                     string iconName = streamReader.ReadLine();
+                    string effectText = streamReader.ReadLine();
                     string data = streamReader.ReadLine();
                     Category buffCategory = Category.Bleeding;
                     int buffValue = 0;

@@ -1,0 +1,44 @@
+Info
+출혈
+exit
+2턴간 매 턴 1+ATK의 피해
+Category
+Deal
+Value
+1
+Duration
+2
+End
+Info
+중독
+exit
+5턴간 매 턴 3의 피해
+Category
+Deal
+Value
+3
+Duration
+5
+End
+Info
+빙결
+exit
+1턴간 행동불능
+Category
+Frozen
+Value
+0
+Duration
+1
+End
+Info
+수면
+exit
+2턴간 수면을 취하며, 수면 중 피해를 입을 시 1.5배의 피해를 입고 깨어난다.
+Category
+Sleeping
+Value
+0
+Duration
+2
+End

@@ -65,7 +65,9 @@ namespace GenericScript
         Poison,
         Bleeding,
         Freezing,
-        Sleep
+        Sleep,
+        Sleeping,
+        Frozen
     }
 
     public class Effect
